@@ -1,0 +1,21 @@
+enum CacheKeys {
+  userId,
+  total,
+  name,
+  notificationId,
+  lang,
+  role,
+  userName,
+  token,
+  ipAddress,
+  autoStartToken,
+  orderID,
+  fullName,
+  firstName,
+  lastName,
+  phoneNumber,
+  email,
+  countryId,
+  buttonIndex,
+
+}
