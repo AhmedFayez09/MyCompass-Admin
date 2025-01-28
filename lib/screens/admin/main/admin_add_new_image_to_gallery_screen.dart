@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/gallery/gallery_cubit.dart';
 import 'package:mycompass_admin_website/screens/admin/main/components/admin_dashboard_header.dart';
@@ -41,7 +42,7 @@ class _AddNewImageToGalleryScreenState
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'إضافة صور جديدة',
+            'Addnewphotos'.tr(context),
             style: Theme.of(context).textTheme.bodyLarge!,
           ),
           leading: IconButton(
@@ -62,7 +63,7 @@ class _AddNewImageToGalleryScreenState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "إضافة الصور",
+                      "Addimages".tr(context),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     ElevatedButton.icon(
@@ -76,21 +77,21 @@ class _AddNewImageToGalleryScreenState
                       onPressed: _addImage,
                       icon: const Icon(Icons.add),
                       label: Text(
-                        "إضافة الصور",
+                        "Addimage".tr(context),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ],
                 ),
                 CustomTextField(
-                  label: "عنوان الصورة",
-                  hintText: "عنوان الصورة",
+                  label: "ImageTitle".tr(context),
+                  hintText: "ImageTitle".tr(context),
                   controller: titleC,
                 ),
                 const SizedBox(height: defaultPadding),
                 CustomTextField(
-                  label: "التفاصيل",
-                  hintText: "التفاصيل",
+                  label: "thedetails".tr(context),
+                  hintText: "thedetails".tr(context),
                   controller: descriptionC,
                 ),
                 const SizedBox(height: defaultPadding),
@@ -104,7 +105,7 @@ class _AddNewImageToGalleryScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "الصور المضافة",
+                        "SelectedImages".tr(context),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: defaultPadding),
@@ -154,10 +155,11 @@ class _AddNewImageToGalleryScreenState
                                                       File(image.path!),
                                                       fit: BoxFit.cover,
                                                     )
-                                                  : const SizedBox(
+                                                  : SizedBox(
                                                       child: Center(
                                                         child: Text(
-                                                            'No valid file path'),
+                                                            'Novalidfilepath'
+                                                                .tr(context)),
                                                       ),
                                                     )),
                                     ),
@@ -176,9 +178,9 @@ class _AddNewImageToGalleryScreenState
                                 );
                               },
                             )
-                          : const Center(
+                          : Center(
                               child: Text(
-                                "لم يتم إضافة أي صور بعد",
+                                "Nophotosaddedyet".tr(context),
                                 style: TextStyle(color: Colors.grey),
                               ),
                             ),
@@ -191,7 +193,8 @@ class _AddNewImageToGalleryScreenState
                     if (state is AddGallerySuccess) {
                       context.read<GalleryCubit>().getAllGallery();
                       Navigator.pop(context);
-                      SnackbarWidget.show(context, "تمت العملية بنجاح");
+                      SnackbarWidget.show(context,
+                          "Theoperationwascompletedsuccessfully".tr(context));
                     } else if (state is AddGalleryFailure) {
                       SnackbarWidget.show(
                           context, state.errorModel.message ?? '');
@@ -212,9 +215,9 @@ class _AddNewImageToGalleryScreenState
                         } else {
                           if (selectedImagesFiles == [] ||
                               selectedImagesFiles.isEmpty) {
-                            SnackbarWidget.show(context, "يجب أن تضيف أي صورة");
+                            SnackbarWidget.show(
+                                context, "Youmustaddanyimage".tr(context));
                           } else {
-                            print("Call Function");
                             context.read<GalleryCubit>().addGallery(
                                   galleryTitle: titleC.text,
                                   galleryDescription: descriptionC.text,
@@ -229,7 +232,7 @@ class _AddNewImageToGalleryScreenState
                               width: 15,
                               child: CircularProgressIndicator(),
                             )
-                          : const Text("حفظ"),
+                          : Text("save".tr(context)),
                     );
                   },
                 )
@@ -303,8 +306,8 @@ class _AddNewImageToGalleryScreenState
       builder: (context) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          title: const Text('تأكيد الحذف'),
-          content: const Text('هل أنت متأكد من حذف الصورة؟'),
+          title: Text('Confirmdeletion'.tr(context)),
+          content: Text('Areyousureyouwanttodeletethephoto'.tr(context)),
           actions: [
             TextButton(
               onPressed: () {
@@ -320,7 +323,7 @@ class _AddNewImageToGalleryScreenState
                 Navigator.pop(context); // Close dialog on 'Yes'
                 HapticFeedback.mediumImpact(); // Provide haptic feedback
               },
-              child: const Text('نعم'),
+              child: Text('Yes'.tr(context)),
             ),
           ],
         ),

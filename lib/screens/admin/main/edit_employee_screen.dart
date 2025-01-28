@@ -332,6 +332,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
 import 'package:mycompass_admin_website/core/functions/chect_equal_list.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 // import 'package:mycompass_admin_website/core/functions/check_equal_list.dart';
 import 'package:mycompass_admin_website/managers/employees/employees_cubit.dart';
 import 'package:mycompass_admin_website/models/employee_model.dart';
@@ -432,7 +433,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('تعديل بيانات الموظف',
+          title: Text( "Editemployeedata".tr(context),
               style: Theme.of(context).textTheme.bodyLarge!),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -459,8 +460,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالموظفين',
+                        Text(
+                        'EmployeeInformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -470,22 +471,22 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'أسم الموظف',
-                        hintText: 'أسم الموظف',
+                        label: 'EmployeeName'.tr(context),
+                        hintText: 'EmployeeName'.tr(context),
                         controller: nameController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'البريد الإلكتروني للموظف',
-                        hintText: 'البريد الإلكتروني للموظف',
+                        label: "EmployeeEmail".tr(context),
+                        hintText:  "EmployeeEmail".tr(context),
                         controller: emailController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'رقم واتساب الموظف',
-                        hintText: 'رقم واتساب الموظف',
+                        label: 'EmployeeWhatsAppNumber'.tr(context),
+                        hintText:  'EmployeeWhatsAppNumber'.tr(context),
                         controller: phoneController,
                       ),
                       const SizedBox(height: defaultPadding),
@@ -507,7 +508,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'اللغات المختارة:',
+                        "Selectedlanguages".tr(context),
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text(
@@ -536,7 +537,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        'الايام المختارة:',
+                 "SelectedDays".tr(context),
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       Text(
@@ -549,8 +550,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                       const SizedBox(height: defaultPadding),
 
                       // Work Specialization Section
-                      const Text(
-                        "التخصص في العمل",
+                        Text(
+                        "WorkSpecialization".tr(context),
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: defaultPadding / 2),
@@ -561,8 +562,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                               children: [
                                 Expanded(
                                   child: CustomTextField(
-                                    label: 'تخصص العمل ${i + 1}',
-                                    hintText: 'اكتب تخصص العمل هنا',
+                                    label: ' ${"WorkSpecialization".tr(context)} ${i + 1}',
+                                    hintText: 'Writeyourjobspecializationhere'.tr(context),
                                     controller: workSpecializationControllers[i],
                                   ),
                                 ),
@@ -591,7 +592,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                             });
                           },
                           icon: const Icon(Icons.add),
-                          label: const Text("أضف تخصص عمل جديد"),
+                          label:   Text("Addanewjobspecialization".tr(context)),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(50, 30),
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -607,7 +608,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                           if (state is UpdateEmployeeSuccess) {
                             context.read<EmployeesCubit>().getAllEmployees();
                             Navigator.pop(context);
-                            SnackbarWidget.show(context, "تم التعديل بنجاح");
+                            SnackbarWidget.show(context, "ModifiedSuccessfully".tr(context));
                           } else if (state is UpdateEmployeeFailure) {
                             SnackbarWidget.show(
                               context,
@@ -647,7 +648,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                               width: 15,
                               child: CircularProgressIndicator(),
                             )
-                                : const Text('تعديل'),
+                                :   Text('Edit'.tr(context)),
                           );
                         },
                       ),

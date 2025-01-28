@@ -1,10 +1,15 @@
+import 'package:mycompass_admin_website/screens/admin/main/users_status_screen.dart';
+
 class UsersStatusModel {
   String? status;
   String? message;
   int? count;
-  List<UsersStatusModelData>? result;
+  List<UsersStatusModelData?>? result;
+  List<UsersStatusModelData?>? oneList;
+  List<UsersStatusModelData?>? twoList;
+  List<UsersStatusModelData?>? threeList;
 
-  UsersStatusModel({this.status, this.message, this.count, this.result});
+  UsersStatusModel({this.status, this.message, this.count, this.result,this.oneList});
 
   UsersStatusModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -16,6 +21,9 @@ class UsersStatusModel {
         result!.add(  UsersStatusModelData.fromJson(v));
       });
     }
+    oneList = result?.map((e) => e?.status == usersStatus[0] ? e : null).where((e) => e != null).toList();
+    twoList = result?.map((e) => e?.status == usersStatus[1] ? e : null).where((e) => e != null).toList();
+    threeList = result?.map((e) => e?.status == usersStatus[2] ? e : null).where((e) => e != null).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -24,7 +32,7 @@ class UsersStatusModel {
     data['message'] = message;
     data['count'] = count;
     if (result != null) {
-      data['result'] = result!.map((v) => v.toJson()).toList();
+      data['result'] = result!.map((v) => v?.toJson()).toList();
     }
     return data;
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/announcement/announcement_cubit.dart';
 import 'package:mycompass_admin_website/routes/routes_name.dart';
 
@@ -45,7 +46,7 @@ class ShowAllAnnouncementsScreen extends StatelessWidget {
           var list = model?.result;
           return Scaffold(
             appBar: AppBar(
-              title: Text('عرض جميع الإعلانات',
+              title: Text('Viewallads'.tr(context),
                   style: Theme.of(context).textTheme.bodyLarge!),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
@@ -55,7 +56,7 @@ class ShowAllAnnouncementsScreen extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  icon: const Text("مسح الكل"),
+                  icon:   Text("Clearall".tr(context)),
                   onPressed: () {
                     context.read<AnnouncementCubit>().deleteAllAnnouncements();
                   },
@@ -69,7 +70,7 @@ class ShowAllAnnouncementsScreen extends StatelessWidget {
                       state is GetAllAnnouncementLoading
                   ? const Center(child: CircularProgressIndicator())
                   : list.isEmpty
-                      ? const Center(child: Text('لا يوجد اعلانات'))
+                      ?   Center(child: Text('Noads'.tr(context)))
                       : ListView.builder(
                           itemCount: list.length,
                           itemBuilder: (context, index) {
@@ -183,7 +184,7 @@ class AnnouncementCard extends StatelessWidget {
           ),
           const SizedBox(height: defaultPadding / 2),
           Text(
-            'نوع الإعلان: ${announcement.type}',
+            ' ${"AdType".tr(context)}${announcement.type}',
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: defaultPadding / 2),
@@ -199,7 +200,7 @@ class AnnouncementCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(defaultPadding / 2),
             ),
             child: Text(
-              'التصنيف: ${announcement.priority}',
+              '${"Classification".tr(context)}: ${announcement.priority}',
               style: TextStyle(
                   color: announcement.priority == 'Normal'
                       ? Colors.black

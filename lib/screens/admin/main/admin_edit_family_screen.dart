@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/family/family_cubit.dart';
 import 'package:mycompass_admin_website/models/family_model.dart';
 import 'package:mycompass_admin_website/widgets/custom_drop_down_field.dart';
@@ -70,8 +71,8 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالعائلة',
+                        Text(
+                        'Familyinformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -80,20 +81,20 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'البريد الإلكتروني',
+                        label:"email".tr(context),
                         hintText: 'example@gmail.com',
                         controller: emailController,
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'اسم المستخدم',
-                        hintText: 'أدخل اسم المستخدم',
+                        label: "username".tr(context),
+                        hintText: 'Enterusername'.tr(context),
                         controller: usernameController,
                       ),
 
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'رقم الهاتف',
+                        label: "phoneNumber".tr(context),
                         hintText: '+20-10-XXXXXXX',
                         controller: phoneController,
                       ),
@@ -104,7 +105,7 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                       //   controller: theirIsDayController,
                       // ),
                       DropdownField(
-                        label: 'أفراد الأسرة',
+                        label: 'FamilyNembers'.tr(context),
                         items: const [
                           'Sunday',
                           'Monday',
@@ -127,8 +128,8 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                         children: [
                           Expanded(
                             child: CustomTextField(
-                              label: 'رقم الشقة',
-                              hintText: 'أدخل رقم الشقة',
+                              label: 'ApartmentNumber'.tr(context),
+                              hintText: 'ApartmentNumber'.tr(context),
                               controller: numberOfApartmentController,
                             ),
                           ),
@@ -137,7 +138,7 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                       ),
                       const SizedBox(height: defaultPadding),
                       DropdownField(
-                        label: 'أفراد الأسرة',
+                        label: "Familymembers".tr(context),
                         items: const [
                           "father",
                           "mother",
@@ -158,7 +159,7 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                             Navigator.pop(context);
                             context.read<FamilyCubit>().getAllFamilies();
                             SnackbarWidget.show(
-                                context, "تم تعديل العائلة بنجاح");
+                                context, "FamilyModifiedSuccessfully".tr(context));
                           } else if (state is UpdateFamilyFailure) {
                             SnackbarWidget.show(
                                 context, state.errorModel.message ?? '');
@@ -192,7 +193,7 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                                     height: 15,
                                     width: 15,
                                     child: CircularProgressIndicator())
-                                : const Text('تعديل علي العائلة'),
+                                :   Text('Modifythefamily'.tr(context)),
                           );
                         },
                       ),
@@ -202,14 +203,14 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                       const Divider(),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: ' الرقم السري القديم',
-                        hintText: 'الرقم السري القديم',
+                        label: 'oldPassword'.tr(context),
+                        hintText:'oldPassword'.tr(context),
                         controller: passwordController,
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'الرقم السري الجديد',
-                        hintText: "الرقم السرى الجديد",
+                        label:"modernpassword".tr(context),
+                        hintText: "modernpassword".tr(context),
                         controller: cPasswordController,
                       ),
                       const SizedBox(height: defaultPadding),
@@ -219,7 +220,7 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                             Navigator.pop(context);
                             context.read<FamilyCubit>().getAllFamilies();
                             SnackbarWidget.show(
-                                context, "تم تعديل الرقم السرى بنجاح");
+                                context, "FamilyModifiedSuccessfully".tr(context));
                           } else if (state is UpdateFamilyPasswordFailure) {
                             SnackbarWidget.show(
                                 context, state.errorModel.message ?? '');
@@ -239,7 +240,7 @@ class _AdminEditFamilyScreenState extends State<AdminEditFamilyScreen> {
                                     height: 15,
                                     width: 15,
                                     child: CircularProgressIndicator())
-                                : const Text('تعديل الرقم السرى'),
+                                :   Text('ChangePassword'.tr(context)),
                           );
                         },
                       ),

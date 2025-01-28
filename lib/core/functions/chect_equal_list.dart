@@ -18,7 +18,15 @@ String extractDate(String dateTime) {
   return DateFormat('yyyy-MM-dd').format(parsedDate); // Format to '2025-01-20'
 }
 
+String extractTime(String dateTimeString) {
+  // Parse the date-time string
+  DateTime dateTime = DateTime.parse(dateTimeString);
 
+  // Format the time as HH:mm:ss
+  String time = "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
+
+  return time;
+}
 
 
 void zoomImage(BuildContext context, String? image) {

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/maintenance/maintenance_cubit.dart';
 import 'package:mycompass_admin_website/models/maintanance_model.dart';
 import 'package:mycompass_admin_website/screens/admin/main/components/admin_dashboard_header.dart';
@@ -19,8 +20,6 @@ class AdminShowAllMaintananceScreen extends StatefulWidget {
 
 class _AdminShowAllMaintananceScreenState
     extends State<AdminShowAllMaintananceScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -35,7 +34,7 @@ class _AdminShowAllMaintananceScreenState
                 const AdminDashboardHeader(),
                 const SizedBox(height: defaultPadding),
                 Text(
-                  "جميع الأصلاحات",
+                  "AllFixes".tr(context),
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const SizedBox(height: defaultPadding),
@@ -55,6 +54,7 @@ class _AdminShowAllMaintananceScreenState
                             : Column(
                                 children: list
                                     .map((e) => MaintenanceItem(
+                                          date: e.createdAt ?? '',
                                           title: e.categoryName ?? '',
                                           description:
                                               e.maintenanceDescription ?? '',
@@ -64,27 +64,28 @@ class _AdminShowAllMaintananceScreenState
                                               color: e.priority == "High"
                                                   ? Colors.redAccent
                                                   : e.priority == "Medium"
-                                                  ? Colors.yellowAccent
-                                                  : Colors.orange,
+                                                      ? Colors.yellowAccent
+                                                      : Colors.orange,
                                             ),
                                             MaintenanceTag(
                                                 text:
                                                     e.maintenanceOrderStatuses ??
                                                         '',
                                                 color: e.maintenanceOrderStatuses ==
-                                                    "Accepted"
+                                                        "Accepted"
                                                     ? Colors.lightBlueAccent
                                                     : e.maintenanceOrderStatuses ==
-                                                    "In-Progress"
-                                                    ? Colors.orangeAccent
-                                                    : e.maintenanceOrderStatuses ==
-                                                    "Completed"
-                                                    ? Colors.greenAccent
-                                                    : e.maintenanceOrderStatuses ==
-                                                    "Cancelled"
-                                                    ? Colors.redAccent
-                                                    : Colors
-                                                    .yellowAccent),
+                                                            "In-Progress"
+                                                        ? Colors.orangeAccent
+                                                        : e.maintenanceOrderStatuses ==
+                                                                "Completed"
+                                                            ? Colors.greenAccent
+                                                            : e.maintenanceOrderStatuses ==
+                                                                    "Cancelled"
+                                                                ? Colors
+                                                                    .redAccent
+                                                                : Colors
+                                                                    .yellowAccent),
                                           ],
                                           onUpdatePriority: () {},
                                           onUpdateStatus: () {
@@ -210,7 +211,9 @@ class StatusUpdateDialog extends StatelessWidget {
             children: [
               //[Pending, Accepted, In-Progress, Completed, Cancelled]
               statusItem(
-                title: "Pending",
+                context: context,
+
+                title: "Pending".tr(context),
                 controller: pendingC,
                 onSend: () => cubit.changeStatus(
                   id: item.sId ?? '',
@@ -219,7 +222,8 @@ class StatusUpdateDialog extends StatelessWidget {
                 ),
               ),
               statusItem(
-                title: "Accepted",
+                context: context,
+                title: "Accepted".tr(context),
                 controller: acceptedC,
                 onSend: () => cubit.changeStatus(
                   id: item.sId ?? '',
@@ -228,7 +232,9 @@ class StatusUpdateDialog extends StatelessWidget {
                 ),
               ),
               statusItem(
-                title: "In-Progress",
+                context: context,
+
+                title: "InProgress".tr(context),
                 controller: inProgressC,
                 onSend: () => cubit.changeStatus(
                   id: item.sId ?? '',
@@ -237,7 +243,9 @@ class StatusUpdateDialog extends StatelessWidget {
                 ),
               ),
               statusItem(
-                title: "Completed",
+                context: context,
+
+                title: "Completed".tr(context),
                 controller: completedC,
                 onSend: () => cubit.changeStatus(
                   id: item.sId ?? '',
@@ -246,7 +254,9 @@ class StatusUpdateDialog extends StatelessWidget {
                 ),
               ),
               statusItem(
-                title: "Cancelled",
+                context: context,
+
+                title: "Cancelled".tr(context),
                 controller: cancelledC,
                 onSend: () => cubit.changeStatus(
                   id: item.sId ?? '',
@@ -326,6 +336,7 @@ class StatusUpdateDialog extends StatelessWidget {
     required String title,
     VoidCallback? onSend,
     TextEditingController? controller,
+    required BuildContext context
     // required String
   }) {
     return ListTile(
@@ -339,7 +350,7 @@ class StatusUpdateDialog extends StatelessWidget {
       title: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          hintText: "Optional Comment",
+          hintText: "OptionalComment".tr(context),
           hintStyle: const TextStyle(fontSize: 13),
           suffixIcon: IconButton(
             onPressed: onSend,
@@ -356,6 +367,7 @@ class StatusUpdateDialog extends StatelessWidget {
 class MaintenanceItem extends StatelessWidget {
   final String title;
   final String description;
+  final String date;
   final String? feedbackComment;
   final List<MaintenanceTag> statusTags;
   final VoidCallback onUpdateStatus;
@@ -365,6 +377,7 @@ class MaintenanceItem extends StatelessWidget {
   const MaintenanceItem({
     super.key,
     required this.title,
+    required this.date,
     this.image,
     required this.description,
     required this.statusTags,
@@ -439,7 +452,15 @@ class MaintenanceItem extends StatelessWidget {
                 }).toList(),
               ),
               const SizedBox(height: 8),
-              if (feedbackComment != null) Text(feedbackComment ?? '')
+              if (feedbackComment != null) Text(feedbackComment ?? ''),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(extractDate(date)),
+                  const SizedBox(width: 20),
+                  Text(extractTime(date)),
+                ],
+              )
               // ElevatedButton(
               //   onPressed: onUpdatePriority,
               //   child: const Text("تغيير الأولوية"),
@@ -472,15 +493,15 @@ class PriorityUpdateDialog extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          title: const Text("منخفضة"),
+          title:   Text("Low".tr(context)),
           onTap: () => onUpdate("منخفضة", Colors.green),
         ),
         ListTile(
-          title: const Text("متوسطة"),
+          title:   Text("Medium".tr(context)),
           onTap: () => onUpdate("متوسطة", Colors.yellow),
         ),
         ListTile(
-          title: const Text("عالية"),
+          title:   Text("High".tr(context)),
           onTap: () => onUpdate("عالية", Colors.red),
         ),
       ],

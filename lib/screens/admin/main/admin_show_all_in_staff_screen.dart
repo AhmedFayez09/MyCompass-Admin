@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/employees/employees_cubit.dart';
 import 'package:mycompass_admin_website/models/employee_model.dart';
@@ -72,7 +73,7 @@ class MyAllEmployees extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "جميع الموظفين",
+              "AllEmployees".tr(context),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             ElevatedButton.icon(
@@ -89,7 +90,7 @@ class MyAllEmployees extends StatelessWidget {
                 Navigator.pushNamed(context, RoutesName.addNewEmployee);
               },
               icon: const Icon(Icons.add),
-              label: Text("إضافة موظف جديد",
+              label: Text("Addanewemployee".tr(context),
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
           ],
@@ -105,7 +106,7 @@ class MyAllEmployees extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "جميع الموظفين",
+                "AllEmployees".tr(context),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: defaultPadding),
@@ -153,27 +154,27 @@ class MyAllEmployees extends StatelessWidget {
     List<EmployeeModelData> list,
   ) {
     return DataTable(
-      columns: const [
+      columns:   [
         DataColumn(
           label: Text(
-            "الاسم",
+            "name".tr(context),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         DataColumn(
           label: Text(
-            "البريد الإلكتروني",
+            "email".tr(context),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         DataColumn(
           label: Text(
-            "رقم الهاتف",
+            "phoneNumber".tr(context),
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         DataColumn(
-          label: Text("الإجراء"), // Empty label for actions column
+          label: Text("Procedure".tr(context)), // Empty label for actions column
         ),
       ],
       rows: list
@@ -203,11 +204,11 @@ class MyAllEmployees extends StatelessWidget {
                       IconButton(
                         icon: Responsive.isMobile(context)
                             ? const Icon(Iconsax.edit)
-                            : const Row(
+                            :   Row(
                                 children: [
                                   Icon(Iconsax.edit),
                                   SizedBox(width: 5),
-                                  Text('تعديل'),
+                                  Text('Edit'.tr(context),),
                                 ],
                               ),
                         color: Colors.lightBlue,
@@ -226,11 +227,11 @@ class MyAllEmployees extends StatelessWidget {
                           return IconButton(
                             icon: Responsive.isMobile(context)
                                 ? const Icon(Iconsax.profile_delete)
-                                : const Row(
+                                :   Row(
                                     children: [
                                       Icon(Iconsax.profile_delete),
                                       SizedBox(width: 5),
-                                      Text('حذف'),
+                                      Text('delete'.tr(context)),
                                     ],
                                   ),
                             color: Colors.red,

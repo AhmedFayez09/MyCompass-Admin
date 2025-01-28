@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
 import 'package:mycompass_admin_website/core/functions/chect_equal_list.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/gallery/gallery_cubit.dart';
 import 'package:mycompass_admin_website/models/gallery_model.dart';
@@ -23,8 +24,7 @@ class AdminShowAllGalleryScreen extends StatefulWidget {
 class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+     super.initState();
     context.read<GalleryCubit>().getAllGallery();
   }
 
@@ -46,7 +46,7 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "جميع الصور",
+                      "Allphotos".tr(context),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     ElevatedButton.icon(
@@ -65,7 +65,7 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                             context, RoutesName.addNewImageToGallery);
                       },
                       icon: const Icon(Icons.add),
-                      label: Text("إضافة الصور",
+                      label: Text("AddImages".tr(context),
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ],
@@ -75,7 +75,7 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                   listener: (context, state) {
                     if (state is DeleteAllGallerySuccess) {
                       context.read<GalleryCubit>().getAllGallery();
-                      SnackbarWidget.show(context, "تم الحذف بنجاح");
+                      SnackbarWidget.show(context, "DeletedSuccessfully".tr(context));
                     }
                   },
                   builder: (context, state) {
@@ -85,7 +85,7 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                           onPressed: () {
                             context.read<GalleryCubit>().deleteAllGallery();
                           },
-                          child: Text("مسح اكل")),
+                          child: Text("DeleteAll".tr(context))),
                     );
                   },
                 ),
@@ -99,7 +99,7 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "جميع الصور",
+                        "AllPhotos".tr(context),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: defaultPadding),
@@ -107,9 +107,9 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                         listener: (context, state) {
                           if (state is DeleteGallerySuccess) {
                             context.read<GalleryCubit>().getAllGallery();
-                            SnackbarWidget.show(context, "تم الحذف بنجاح");
+                            SnackbarWidget.show(context, "Deletedsuccessfully".tr(context));
                           } else if (state is DeleteGalleryFailure) {
-                            SnackbarWidget.show(context, "حدث خطأ ما");
+                            SnackbarWidget.show(context, "ErrorInDeleting".tr(context));
                           }
                         },
                         builder: (context, state) {
@@ -148,7 +148,10 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
                                         return AllGalleryItem(
                                           title: item.galleryTitle,
                                           description: item.galleryDescription,
-                                          image: item.galleryImages?.first
+                                          image:
+                                          item.galleryImages?.length == 0 ? null :
+
+                                          item.galleryImages?.first
                                                   .imageUrl ??
                                               '',
                                           onTap: () => showListImage(item),
@@ -234,7 +237,7 @@ class AllGalleryItem extends StatelessWidget {
   });
 
   final VoidCallback? onTap;
-  final String image;
+  final String? image;
   final VoidCallback? onTapDelete;
   final VoidCallback? onTapEdit;
   final String? title;
@@ -275,13 +278,14 @@ class AllGalleryItem extends StatelessWidget {
                   description ?? '',
                   style: const TextStyle(color: Colors.white),
                 ),
+                if(image != null)
                 SizedBox(
                   height: 150,
                   width: 200,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      image,
+                      image!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
                           const Icon(Icons.broken_image),

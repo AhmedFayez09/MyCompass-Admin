@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/managers/family/family_cubit.dart';
 import 'package:mycompass_admin_website/routes/routes_name.dart';
@@ -32,7 +33,7 @@ class AdminMobileLoginForm extends StatelessWidget {
           );
           SnackbarWidget.show(
             context,
-            "Login Success",
+            "LoginSuccess".tr(context),
           );
           context.read<FamilyCubit>().getAllFamilies();
           loginCubit.getProfile();
@@ -86,8 +87,8 @@ class AdminMobileLoginForm extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: defaultPadding),
-                          const Text(
-                            'المعلومات الشخصية',
+                            Text(
+                            'personalInformation'.tr(context),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 24,
@@ -96,13 +97,13 @@ class AdminMobileLoginForm extends StatelessWidget {
                           ),
                           const SizedBox(height: defaultPadding),
                           CustomTextField(
-                            label: 'البريد الإلكتروني',
+                            label: "email".tr(context),
                             hintText: 'example@gmail.com',
                             controller: emailController,
                           ),
                           const SizedBox(height: defaultPadding),
                           CustomTextField(
-                            label: 'كلمة المرور',
+                            label: "password".tr(context),
                             hintText: '********',
                             controller: passwordController,
                           ),
@@ -110,15 +111,12 @@ class AdminMobileLoginForm extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {
                               // Print all the form data
-                              print(
-                                  'البريد الإلكتروني: ${emailController.text}');
-                              print('كلمة المرور: ${passwordController.text}');
                               loginCubit.login(
                                 email: emailController.text,
                                 password: passwordController.text,
                               );
                             },
-                            child: Text('تسجيل الدخول'),
+                            child: Text("login".tr(context)),
                           ),
                         ],
                       ),

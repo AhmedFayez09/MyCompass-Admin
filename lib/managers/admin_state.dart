@@ -72,3 +72,12 @@ final class GetUsersStatesFailure extends AdminState {
 
   GetUsersStatesFailure({required this.errorModel});
 }
+final class NotResponsedLoading extends AdminState {}
+final class NotResponsedSuccess extends AdminState {}
+final class NotResponsedFailure extends AdminState {
+  final ErrorModel errorModel;
+
+  NotResponsedFailure({required this.errorModel});
+
+}
+

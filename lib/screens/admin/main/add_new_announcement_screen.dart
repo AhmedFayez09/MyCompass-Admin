@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
 import 'package:mycompass_admin_website/core/helper_functions/image_helper.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/managers/announcement/announcement_cubit.dart';
 import 'package:mycompass_admin_website/screens/admin/main/show%20_all_announcements_screen.dart';
@@ -60,7 +61,9 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-              announcement == null ? 'إضافة إعلان جديد' : "تعديل الاعلان",
+              announcement == null
+                  ? 'Addnewad'.tr(context)
+                  : "EditAd".tr(context),
               style: Theme.of(context).textTheme.bodyLarge!),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -87,8 +90,8 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالإعلان',
+                        Text(
+                        'AdvertisingInformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -98,15 +101,15 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'عنوان الإعلان',
-                        hintText: 'عنوان الإعلان',
+                        label: 'AdTitle'.tr(context),
+                        hintText:'AdTitle'.tr(context),
                         controller: titleController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'محتوي الإعلان',
-                        hintText: 'محتوي الإعلان',
+                        label: 'Adcontent'.tr(context),
+                        hintText:  'Adcontent'.tr(context),
                         controller: contentController,
                         isContent: true,
                       ),
@@ -114,7 +117,7 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
 
                       // Type dropdown
                       DropdownField(
-                        label: 'نوع الإعلان',
+                        label: 'AdType'.tr(context),
                         items: announcementTypes, // Example items
                         selectedValue: selectedType,
                         onChanged: (value) {
@@ -130,7 +133,7 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
                       const SizedBox(height: defaultPadding),
 
                       DropdownField(
-                        label: 'التصنيف',
+                        label: 'Classification'.tr(context),
                         items: priorities, // Example items
                         selectedValue: selectedPriority,
                         onChanged: (value) {
@@ -153,7 +156,7 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
                                   : _editingPickImage();
                             }
                           },
-                          child: const Text("اضافة صورة")),
+                          child:   Text("Addimage".tr(context))),
                       const SizedBox(height: defaultPadding),
 
                       // in Web Case
@@ -218,17 +221,17 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
 
                           if (state is AddNewAnnouncementSuccess) {
                             Navigator.pop(context);
-                            SnackbarWidget.show(context, "تمت الاضافة بنجاح");
+                            SnackbarWidget.show(context, "Addedsuccessfully".tr(context));
                           } else if (state is AddNewAnnouncementFailure) {
                             SnackbarWidget.show(context,
-                                state.errorModel.message ?? 'Unknown error');
+                                state.errorModel.message ?? 'Unknownerror'.tr(context));
                           } else if (state is UpdateAnnouncementSuccess) {
                             cubit.getAllAnnouncements();
                             Navigator.pop(context);
-                            SnackbarWidget.show(context, "تم التعديل بنجاح");
+                            SnackbarWidget.show(context, "ModifiedSuccessfully".tr(context));
                           } else if (state is UpdateAnnouncementFailure) {
                             SnackbarWidget.show(context,
-                                state.errorModel.message ?? 'Unknown error');
+                                state.errorModel.message ?? 'Unknownerror'.tr(context));
                           }
                         },
                         builder: (context, state) {
@@ -284,8 +287,8 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
                                     width: 15,
                                     child: CircularProgressIndicator())
                                 : Text(announcement == null
-                                    ? 'إضافة إعلان جديد'
-                                    : "تعديل الإعلان"),
+                                    ? 'Addnewad'.tr(context)
+                                    : "EditAd".tr(context)),
                           );
                         },
                       ),

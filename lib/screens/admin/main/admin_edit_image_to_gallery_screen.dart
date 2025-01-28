@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/gallery/gallery_cubit.dart';
 import 'package:mycompass_admin_website/screens/admin/main/admin_show_all_gallery_screen.dart';
@@ -49,7 +50,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "تعديل الصور",
+            "Photoediting".tr(context),
             style: Theme.of(context).textTheme.bodyLarge!,
           ),
           leading: IconButton(
@@ -70,7 +71,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "تعديل الصور",
+                      "Photoediting".tr(context),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     ElevatedButton.icon(
@@ -84,21 +85,21 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                       onPressed: _addImage,
                       icon: const Icon(Icons.add),
                       label: Text(
-                        "إضافة الصور",
+                        "AddImages".tr(context),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
                   ],
                 ),
                 CustomTextField(
-                  label: "عنوان الصورة",
-                  hintText: "عنوان الصورة",
+                  label: "ImageTitle".tr(context),
+                  hintText: "ImageTitle".tr(context),
                   controller: titleC,
                 ),
                 const SizedBox(height: defaultPadding),
                 CustomTextField(
-                  label: "التفاصيل",
-                  hintText: "التفاصيل",
+                  label: "Details".tr(context),
+                  hintText: "Details".tr(context),
                   controller: descriptionC,
                 ),
                 const SizedBox(height: defaultPadding),
@@ -112,7 +113,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "الصور المضافة",
+                        "AddedImages".tr(context),
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: defaultPadding),
@@ -162,10 +163,11 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                                                       File(image.path!),
                                                       fit: BoxFit.cover,
                                                     )
-                                                  : const SizedBox(
+                                                  :   SizedBox(
                                                       child: Center(
                                                         child: Text(
-                                                            'No valid file path'),
+                                                          'Novalidfilepath'.tr(context),
+                                                        ),
                                                       ),
                                                     )),
                                     ),
@@ -185,7 +187,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                               },
                             )
                           : gallery == null
-                              ? const Text("لا يوجد صور")
+                              ?   Text("NoPictures".tr(context))
                               : OldImage(images: gallery.imageUrl ?? []),
                     ],
                   ),
@@ -196,7 +198,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                     if (state is UpdateGallerySuccess) {
                       context.read<GalleryCubit>().getAllGallery();
                       Navigator.pop(context);
-                      SnackbarWidget.show(context, "تمت العملية بنجاح");
+                      SnackbarWidget.show(context, "TheOperationWasCompletedSuccessfully".tr(context));
                     } else if (state is UpdateGalleryFailure) {
                       SnackbarWidget.show(
                         context,
@@ -232,7 +234,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                               width: 15,
                               child: CircularProgressIndicator(),
                             )
-                          : const Text("حفظ"),
+                          :   Text("save".tr(context)),
                     );
                   },
                 )
@@ -306,14 +308,14 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
       builder: (context) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          title: const Text('تأكيد الحذف'),
-          content: const Text('هل أنت متأكد من حذف الصورة؟'),
+          title:  Text('ConfirmDeletion'.tr(context)),
+          content:   Text('AreYouSureYouWantToDeleteThePhoto'.tr(context)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Close dialog on 'No'
               },
-              child: const Text('لا'),
+              child:   Text('no'.tr(context)),
             ),
             TextButton(
               onPressed: () {
@@ -323,7 +325,7 @@ class _EditImageToGalleryScreenState extends State<EditImageToGalleryScreen> {
                 Navigator.pop(context); // Close dialog on 'Yes'
                 HapticFeedback.mediumImpact(); // Provide haptic feedback
               },
-              child: const Text('نعم'),
+              child:   Text('Yes'.tr(context)),
             ),
           ],
         ),

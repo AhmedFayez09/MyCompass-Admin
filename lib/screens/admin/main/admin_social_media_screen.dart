@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/controllers/menu_app_controller.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
 import 'package:mycompass_admin_website/core/functions/show_loading.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/post/post_cubit.dart';
 import 'package:mycompass_admin_website/routes/routes_name.dart';
@@ -44,14 +45,14 @@ class _AdminSocialMediaScreenState extends State<AdminSocialMediaScreen> {
                           .contractorOfficerControlMenu,
                     ),
                     Text(
-                      "التواصل الأجتماعي",
+                      "Socialcommunication".tr(context),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ],
                 ),
               if (!Responsive.isMobile(context))
                 Text(
-                  "التواصل الأجتماعي",
+                  "Socialcommunication".tr(context),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               const SizedBox(height: defaultPadding),
@@ -59,7 +60,7 @@ class _AdminSocialMediaScreenState extends State<AdminSocialMediaScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "التواصل الأجتماعي",
+                    "Socialcommunication".tr(context),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   ElevatedButton.icon(
@@ -77,7 +78,7 @@ class _AdminSocialMediaScreenState extends State<AdminSocialMediaScreen> {
                       Navigator.pushNamed(context, RoutesName.adminAddNewPost);
                     },
                     icon: const Icon(Icons.add),
-                    label: Text("إضافة منشور",
+                    label: Text("Addapost".tr(context),
                         style: Theme.of(context).textTheme.bodyMedium),
                   ),
                 ],

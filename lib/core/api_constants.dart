@@ -23,6 +23,7 @@ class ApiConstants {
   static const String createFastNotificationUrl = 'admin/createNotification';
   static const String getUserStatusUrl = 'admin/getAllResponses';
   static const String handleResponseUrl = 'operations/handleResponse';
+  static const String getNonResponders = 'admin/getNonResponders';
 
   static   String deleteFamilyUrl ({required String id})=> 'user/deleteUser/$id';
   static   String deleteAdminUrl ({required String id})=> 'admin/deleteAdmin/$id';

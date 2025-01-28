@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
 import 'package:mycompass_admin_website/core/local_storage/cach_keys.dart';
 import 'package:mycompass_admin_website/core/local_storage/cache_helper.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/models/post_model.dart';
 
 import '../../core/functions/chect_equal_list.dart';
@@ -139,7 +140,7 @@ class PostItem extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: onShowComments,
-                  child: const Text("تعليقات"),
+                  child:   Text("comments".tr(context)),
                 ),
               ],
             ),

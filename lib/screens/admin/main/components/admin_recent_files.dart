@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mycompass_admin_website/core/functions/convert_data_to_day.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/managers/family/family_cubit.dart';
@@ -38,7 +39,7 @@ class AllFamiliesTable extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "جميع العائلات",
+             "AllFamilies".tr(context),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               if (isHome)
@@ -59,7 +60,7 @@ class AllFamiliesTable extends StatelessWidget {
                   },
                   icon: const Icon(Icons.add),
                   label: Text(
-                    "فحص الغرف",
+                    "roomCheck".tr(context),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
@@ -85,7 +86,7 @@ class AllFamiliesTable extends StatelessWidget {
                         if (state is DeleteFamilySuccess) {
                           context.read<FamilyCubit>().getAllFamilies();
 
-                          SnackbarWidget.show(context, "تم الحذف بنجاح");
+                          SnackbarWidget.show(context, "Deletedsuccessfully".tr(context));
                         }
                       },
                       builder: (context, state) {
@@ -98,43 +99,43 @@ class AllFamiliesTable extends StatelessWidget {
                                 columnSpacing: defaultPadding,
                                 columns: [
                                   DataColumn(
-                                    label: Text("أسم المستخدم",
+                                    label: Text("userName".tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
                                   ),
                                   DataColumn(
-                                    label: Text("اليوم الخاص بهم",
+                                    label: Text("TheirSpecialDay".tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
                                   ),
                                   DataColumn(
-                                    label: Text("رقم الشقة",
+                                    label: Text("ApartmentNumber".tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
                                   ),
                                   DataColumn(
-                                    label: Text("البريد الإلكتروني",
+                                    label: Text("email".tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
                                   ),
                                   DataColumn(
-                                    label: Text("رقم الهاتف",
+                                    label: Text("phoneNumber".tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
                                   ), DataColumn(
-                                    label: Text("يوم الاصلاحات",
+                                    label: Text("ReformDay".tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium),
                                   ),
                                   DataColumn(
                                     label: Text(
-                                      "المسمي الخاص به من ضمن عائلته",
+                                      "Hisnameisfromhisfamily".tr(context),
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium,
@@ -215,11 +216,11 @@ DataRow recentCustomerDataRow({
             IconButton(
               icon: Responsive.isMobile(context)
                   ? const Icon(Iconsax.edit)
-                  : const Row(
+                  :   Row(
                       children: [
                         Icon(Iconsax.edit),
                         SizedBox(width: 5),
-                        Text('تعديل'),
+                        Text("Edit".tr(context)),
                       ],
                     ),
               color: Colors.lightBlue,
@@ -234,11 +235,11 @@ DataRow recentCustomerDataRow({
             IconButton(
               icon: Responsive.isMobile(context)
                   ? const Icon(Iconsax.profile_delete)
-                  : const Row(
+                  :   Row(
                       children: [
                         Icon(Iconsax.profile_delete),
                         SizedBox(width: 5),
-                        Text('حذف'),
+                        Text('delete'.tr(context),)
                       ],
                     ),
               color: Colors.red,

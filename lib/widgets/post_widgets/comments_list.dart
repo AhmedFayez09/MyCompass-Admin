@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/post/post_cubit.dart';
+import 'package:mycompass_admin_website/widgets/post_widgets/add_comment_text_field.dart';
 import 'package:mycompass_admin_website/widgets/snackbar_widget.dart';
 
 import '../../core/constants.dart';
@@ -25,12 +27,29 @@ class _CommentsListState extends State<CommentsList> {
   TextEditingController commentController = TextEditingController();
   bool addReplay = false;
   String? commentId;
+  FocusNode? focusNode;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    focusNode = FocusNode();
+
     context.read<PostCubit>().getComment(postId: widget.pastId);
+  }
+
+  void setFocus() {
+    FocusScope.of(context).requestFocus(focusNode);
+  }
+
+  final ScrollController _scrollController = ScrollController();
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
+      // debugPrint("Reached the end of the list. Last item: ${_items.last}");
+      // Perform actions when the end of the list is reached
+    }
   }
 
   @override
@@ -59,128 +78,116 @@ class _CommentsListState extends State<CommentsList> {
                 child: Dialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
-                  child: Container(
-                    padding: const EdgeInsets.all(defaultPadding),
-                    color: Colors.black.withOpacity(0.3),
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "التعليقات",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(color: Colors.white),
-                          ),
-                          const SizedBox(height: defaultPadding),
-                          ...comments.map<Widget>((comment) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 2.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(
+                          top: defaultPadding,
+                          right: defaultPadding,
+                          bottom: defaultPadding * 3,
+                          left: defaultPadding,
+                        ),
+                        color: Colors.grey.shade900,
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "comments".tr(context),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(color: Colors.white),
+                              ),
+                              const SizedBox(height: defaultPadding),
+                              ...comments.map<Widget>((comment) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                  child: Column(
                                     children: [
-                                      Flexible(
-                                        child: Text(
-                                          comment.commentContent ??
-                                              'لا يوجد تعليق',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium!
-                                              .copyWith(color: Colors.white),
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              comment.commentContent ??
+                                                  'Nocomment'.tr(context),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                      color: Colors.white),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                commentId = comment.sId;
+                                                addReplay = true;
+                                                _scrollController
+                                                    .addListener(_onScroll);
+                                              });
+                                            },
+                                            child:   Text(
+                                              "reply".tr(context),
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            commentId = comment.sId;
-                                            addReplay = true;
-                                          });
-                                        },
-                                        child: const Text(
-                                          "رد",
-                                          style: TextStyle(color: Colors.blue),
+                                      if (comment.reply?.isNotEmpty ?? false)
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional.topStart,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              showReplyDialog(
+                                                  reply: comment.reply ?? []);
+                                              // comment.reply ?? []);
+                                            },
+                                            child:   Text("ViewResponses".tr(
+                                                context)),
+                                          ),
                                         ),
-                                      ),
+                                      const Divider(color: Colors.white),
                                     ],
                                   ),
-                                  if (comment.reply?.isNotEmpty ?? false)
-                                    Align(
-                                      alignment: AlignmentDirectional.topStart,
-                                      child: TextButton(
-                                        onPressed: () {
-                                          showReplyDialog(
-                                              reply: comment.reply ?? []);
-                                          // comment.reply ?? []);
-                                        },
-                                        child: const Text("رؤية الردود"),
-                                      ),
-                                    ),
-                                  const Divider(color: Colors.white),
-                                ],
-                              ),
-                            );
-                          }),
-                          // const Divider(color: Colors.white),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: commentController,
-                                  decoration: InputDecoration(
-                                    hintText: addReplay == true
-                                        ? "أضف رد..."
-                                        : "أضف تعليقًا...",
-                                    hintStyle:
-                                        const TextStyle(color: Colors.white70),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                      borderSide:
-                                          const BorderSide(color: Colors.grey),
-                                    ),
-                                  ),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  if (commentController.text.isEmpty) {
-                                    SnackbarWidget.show(
-                                        context, "لا يمكنك ترك الحقل فارغ");
-                                  } else {
-                                    if (addReplay == true) {
-                                      cubit.addReplay(
-                                        id: commentId ?? '',
-                                        replay: commentController.text,
-                                      );
-                                    } else {
-                                      cubit.addComment(
-                                        postId: widget.pastId,
-                                        comment: commentController.text,
-                                      );
-                                    }
-                                  }
-                                },
-                                icon: state is AddCommentLoading ||
-                                        state is AddReplayLoading
-                                    ? const SizedBox(
-                                        width: 10,
-                                        height: 10,
-                                        child: CircularProgressIndicator(
-                                            color: Colors.white))
-                                    : const Icon(Icons.send,
-                                        color: Colors.white),
-                              ),
+                                );
+                              }),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      AddCommentTextField(
+                        controller: commentController,
+                        addReplay: addReplay,
+                        load: state is AddCommentLoading ||
+                            state is AddReplayLoading,
+                        onSend: () {
+                          if (commentController.text.isEmpty) {
+                            SnackbarWidget.show(
+                                context, "Youcannotleavethefieldblank".tr(context));
+                          } else {
+                            if (addReplay == true) {
+                              cubit.addReplay(
+                                id: commentId ?? '',
+                                replay: commentController.text,
+                              );
+                            } else {
+                              cubit.addComment(
+                                postId: widget.pastId,
+                                comment: commentController.text,
+                              );
+                            }
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -198,7 +205,7 @@ class _CommentsListState extends State<CommentsList> {
                     borderRadius: BorderRadius.circular(8)),
                 child: Container(
                   padding: const EdgeInsets.all(defaultPadding),
-                  color: Colors.red.withOpacity(0.3),
+                  color: Colors.blueGrey.withOpacity(0.3),
                   height: MediaQuery.of(context).size.height * 0.8,
                   child: SingleChildScrollView(
                     child: Column(
@@ -208,7 +215,7 @@ class _CommentsListState extends State<CommentsList> {
                           children: [
                             const BackButton(),
                             Text(
-                              "الردود",
+                              "Replies".tr(context),
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium!
@@ -228,79 +235,20 @@ class _CommentsListState extends State<CommentsList> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        reply.commentContent ?? 'لا يوجد رد',
+                                        reply.commentContent ?? 'NoResponse'.tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium!
                                             .copyWith(color: Colors.white),
                                       ),
                                     ),
-                                    // TextButton(
-                                    //   onPressed: () => {},
-                                    //   // _replyToComment(index, comment),
-                                    //   child: const Text(
-                                    //     "رد",
-                                    //     style: TextStyle(color: Colors.blue),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
-                                // if (comment.reply?.isNotEmpty ?? false)
-                                //   Align(
-                                //     alignment: AlignmentDirectional.topStart,
-                                //     child: TextButton(
-                                //       onPressed: () {},
-                                //       child: const Text("رؤية الردود"),
-                                //     ),
-                                //   ),
                                 const Divider(color: Colors.white),
                               ],
                             ),
                           );
                         }),
-                        // const Divider(color: Colors.white),
-                        // BlocConsumer<PostCubit, PostState>(
-                        //   listener: (context, state) {
-                        //     if (state is AddCommentSuccess) {
-                        //       context.read<PostCubit>().getAllPosts();
-                        //     }
-                        //   },
-                        //   builder: (context, state) {
-                        //     var cubit = context.read<PostCubit>();
-                        //     return Row(
-                        //       children: [
-                        //         Expanded(
-                        //           child: TextField(
-                        //             controller: commentController,
-                        //             decoration: InputDecoration(
-                        //               hintText: "أضف تعليقًا...",
-                        //               hintStyle: const TextStyle(color: Colors.white70),
-                        //               border: OutlineInputBorder(
-                        //                 borderRadius: BorderRadius.circular(8),
-                        //                 borderSide: const BorderSide(color: Colors.grey),
-                        //               ),
-                        //             ),
-                        //             style: const TextStyle(color: Colors.white),
-                        //           ),
-                        //         ),
-                        //         IconButton(
-                        //           onPressed: () {
-                        //             if (commentController.text.isEmpty) {
-                        //               SnackbarWidget.show(
-                        //                   context, "لا يمكنك ترك التعليق فارغ");
-                        //             } else {
-                        //               cubit.addComment(
-                        //                 postId: widget.pastId,
-                        //                 comment: commentController.text,
-                        //               );
-                        //             }
-                        //           },
-                        //           icon: const Icon(Icons.send, color: Colors.white),
-                        //         ),
-                        //       ],
-                        //     );
-                        //   },
-                        // ),
                       ],
                     ),
                   ),

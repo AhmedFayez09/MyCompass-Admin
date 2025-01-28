@@ -57,7 +57,7 @@ class AdminFileInfoCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "${info.numOfFiles}عائلة  ",
+                "${info.numOfFiles}${"families"}  ",
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!

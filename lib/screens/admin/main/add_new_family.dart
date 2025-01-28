@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/managers/family/family_cubit.dart';
 import 'package:mycompass_admin_website/widgets/custom_drop_down_field.dart';
@@ -33,7 +34,7 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('إضافة عائلة جديد',
+          title: Text('Addanewfamily'.tr(context),
               style: Theme.of(context).textTheme.bodyLarge),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -61,8 +62,8 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالعائلة',
+                        Text(
+                        'Familyinformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -71,19 +72,19 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'البريد الإلكتروني',
+                        label: "email".tr(context),
                         hintText: 'example@gmail.com',
                         controller: emailController,
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'اسم المستخدم',
+                        label: "username".tr(context),
                         hintText: 'أدخل اسم المستخدم',
                         controller: usernameController,
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'رقم الهاتف',
+                        label: 'phoneNumber'.tr(context),
                         hintText: '+20-10-XXXXXXX',
                         controller: phoneController,
                       ),
@@ -92,7 +93,7 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
                         children: [
                           Expanded(
                             child: CustomTextField(
-                              label: 'رقم الشقة',
+                              label: 'ApartmentNumber'.tr(context),
                               hintText: 'أدخل رقم الشقة',
                               controller: numberOfApartmentController,
                             ),
@@ -102,19 +103,19 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'الرقم السري',
+                        label: 'password'.tr(context),
                         hintText: 'الرقم السري',
                         controller: passwordController,
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: "تأكيد الرقم السري",
-                        hintText: "تأكيد الرقم السري",
+                        label: "Confirmadminpassword".tr(context),
+                        hintText: "Confirmadminpassword".tr(context),
                         controller: cPasswordController,
                       ),
                       const SizedBox(height: defaultPadding),
                       DropdownField(
-                        label: 'أفراد الأسرة',
+                        label: 'familyMember'.tr(context),
                         items: const [
                           "father",
                           "mother",
@@ -137,7 +138,7 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
 
                             SnackbarWidget.show(
                               context,
-                              state.message ?? 'تم اضافة عائلة جديدة بنجاح',
+                              state.message ?? 'Newfamilyaddedsuccessfully'.tr(context),
                             );
                           } else if (state is CreateNewFamilyFailure) {
                             SnackbarWidget.show(
@@ -167,7 +168,7 @@ class _AddNewFamilyScreenState extends State<AddNewFamilyScreen> {
                                     width: 20,
                                     child: CircularProgressIndicator(),
                                   )
-                                : const Text('إضافة عائلة جديد'),
+                                :   Text('Addanewfamily'.tr(context)),
                           );
                         },
                       )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/announcement/announcement_cubit.dart';
 import 'package:mycompass_admin_website/models/my_files.dart';
@@ -22,7 +23,7 @@ class MyFamilies extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "جميع العائلات",
+              "AllFamilies".tr(context),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Responsive(
@@ -77,7 +78,7 @@ class ButtonsChoicesTabletAndDesktop extends StatelessWidget {
             Navigator.pushNamed(context, RoutesName.addNewAnnouncement);
           },
           icon: const Icon(Icons.add),
-          label: Text("إضافة الإعلانات",
+          label: Text("Addads".tr(context),
               style: Theme.of(context).textTheme.bodyMedium),
         ),
         const SizedBox(width: defaultPadding),
@@ -106,7 +107,7 @@ class ButtonsChoicesTabletAndDesktop extends StatelessWidget {
               /// Todo: navigate to add new announcement screen
             },
             icon: const Icon(Icons.add),
-            label: Text("عرض حميع الإعلانات",
+            label: Text("ViewAllAds".tr(context),
                 style: Theme.of(context).textTheme.bodyMedium),
           ),
         ),
@@ -124,7 +125,7 @@ class ButtonsChoicesTabletAndDesktop extends StatelessWidget {
             Navigator.pushNamed(context, RoutesName.addNewFamily);
           },
           icon: const Icon(Icons.add),
-          label: Text("إضافة عائلة جديدة",
+          label: Text("Addanewfamily".tr(context),
               style: Theme.of(context).textTheme.bodyMedium),
         ),
       ],
@@ -154,7 +155,7 @@ class ButtonsChoicesMobile extends StatelessWidget {
             Navigator.pushNamed(context, RoutesName.addNewFamily);
           },
           icon: const Icon(Icons.add),
-          label: Text("إضافة عائلة جديدة",
+          label: Text("Addanewfamily".tr(context),
               style: Theme.of(context).textTheme.bodyMedium),
         ),
         const SizedBox(height: defaultPadding),
@@ -177,7 +178,7 @@ class ButtonsChoicesMobile extends StatelessWidget {
                 ///
               },
               icon: const Icon(Icons.add),
-              label: Text("عرض حميع الإعلانات",
+              label: Text("ViewAllAds".tr(context),
                   style: Theme.of(context).textTheme.bodyMedium),
             );
           },
@@ -197,7 +198,7 @@ class ButtonsChoicesMobile extends StatelessWidget {
             /// Todo: navigate to add new announcement screen
           },
           icon: const Icon(Icons.add),
-          label: Text("إضافة الإعلانات",
+          label: Text("Addads".tr(context),
               style: Theme.of(context).textTheme.bodyMedium),
         ),
       ],

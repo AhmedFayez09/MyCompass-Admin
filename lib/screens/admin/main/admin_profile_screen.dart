@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/routes/routes_name.dart';
 import 'package:mycompass_admin_website/screens/admin/main/components/admin_profile_header.dart';
@@ -68,8 +69,8 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'المعلومات الشخصية',
+                        Text(
+                          'PersonalInformation'.tr(context),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -78,19 +79,19 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'البريد الإلكتروني',
+                          label: 'email'.tr(context),
                           hintText: 'example@gmail.com',
                           controller: emailController,
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'أدخل اسمك',
-                          hintText: 'الاسم',
+                          label: 'EnterYourName'.tr(context),
+                          hintText: 'Name'.tr(context),
                           controller: userNameController,
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'رقم الهاتف',
+                          label: 'phoneNumber'.tr(context),
                           hintText: '+20-10-XXXXXXX',
                           controller: phoneController,
                         ),
@@ -113,7 +114,7 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                       Navigator.pushNamed(
                           context, RoutesName.usersStatusScreen);
                     },
-                    child: Text("اظهار جميع حالات المستخدمين"),
+                    child: Text("ShowAllUserStatuses".tr(context)),
                   ),
                   const SizedBox(height: defaultPadding),
                   Container(
@@ -126,9 +127,9 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'المعلومات الخاصة بالاشعارات',
-                          style: TextStyle(
+                        Text(
+                          'NotificationInformation'.tr(context),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -139,15 +140,20 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                           listener: (context, state) {
                             if (state is CreateFastNotificationSuccess) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('تم اضافة الاشعار بنجاح')),
+                                SnackBar(
+                                  content: Text(
+                                    'TheNotificationHasBeenAddedSuccessfully'
+                                        .tr(context),
+                                  ),
+                                ),
                               );
-                              Navigator.pushNamed(context, RoutesName.usersStatusScreen);
+                              Navigator.pushNamed(
+                                  context, RoutesName.usersStatusScreen);
                               context.read<AdminCubit>().getUsersStatus();
                             } else if (state is CreateFastNotificationFailure) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('لم يتم اضافة الاشعار')),
+                                  SnackBar(
+                                    content: Text('Thenotificationhasnotbeenadded'.tr(context))),
                               );
                             }
                           },
@@ -163,27 +169,28 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                                       height: 15,
                                       width: 15,
                                       child: const CircularProgressIndicator())
-                                  : Text("اضافة اشعار سريع"),
+                                  : Text("Addquicknotification".tr(context)),
                             );
                           },
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'العنوان',
-                          hintText: 'هام جدا',
+                          label: 'address'.tr(context),
+                          hintText: 'VeryImportant'.tr(context),
                           controller: notificationTitleController,
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'المحتوي',
-                          hintText: 'الي كل مستخدمي السيستم .....',
+                          label: 'Content'.tr(context),
+                          hintText: 'Toallusersofthesystem'.tr(context),
                           controller: notificationContentController,
                         ),
                         const SizedBox(height: defaultPadding),
                         BlocConsumer<AdminCubit, AdminState>(
                           listener: (context, state) {
                             if (state is CreateCustomNotificationSuccess) {
-                              Navigator.pushNamed(context, RoutesName.usersStatusScreen);
+                              Navigator.pushNamed(
+                                  context, RoutesName.usersStatusScreen);
                               context.read<AdminCubit>().getUsersStatus();
                               notificationContentController.clear();
                               notificationTitleController.clear();
@@ -196,7 +203,7 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                                     notificationContentController
                                         .text.isEmpty) {
                                   SnackbarWidget.show(
-                                      context, "يجب ادخال جميع البيانات");
+                                      context, "Alldatamustbeentered".tr(context));
                                 } else {
                                   context
                                       .read<AdminCubit>()
@@ -215,7 +222,7 @@ class AdminProfileScreenState extends State<AdminProfileScreen> {
                                       height: 15,
                                       width: 15,
                                       child: CircularProgressIndicator())
-                                  : const Text('اضافة الاشعار'),
+                                  :   Text('AddNotification'.tr(context)),
                             );
                           },
                         ),

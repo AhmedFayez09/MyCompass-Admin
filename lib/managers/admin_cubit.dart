@@ -22,6 +22,7 @@ import 'package:mycompass_admin_website/models/profile_model.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import '../controllers/notification_manager.dart';
+import '../screens/admin/main/user_status/non_reponsed_model.dart';
 export 'package:dio/dio.dart';
 
 part 'admin_state.dart';
@@ -439,4 +440,44 @@ class AdminCubit extends Cubit<AdminState> {
           GetUsersStatesFailure(errorModel: ErrorModel(message: e.toString())));
     }
   }
+
+
+
+  NonResponsedModel? nonResponsedModel;
+
+  void getNotResponsed() async {
+    emit(NotResponsedLoading());
+    try {
+
+      final response = await dioHelper.getData(
+        endPoint: ApiConstants.getNonResponders,
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(NotResponsedSuccess());
+        nonResponsedModel = NonResponsedModel.fromJson(response.data);
+      } else if (response.statusCode == 422 || response.statusCode == 404) {
+        final errorMessage =
+            response.data['Error']?.toString() ?? 'Unknown error';
+        logError(errorMessage);
+        emit(
+            NotResponsedFailure(errorModel: ErrorModel(message: errorMessage)));
+      } else {
+        final errorMessage =
+            response.data['message']?.toString() ?? 'Error in Creating Family';
+        logError(errorMessage);
+        emit(
+            NotResponsedFailure(errorModel: ErrorModel(message: errorMessage)));
+      }
+    } catch (e) {
+      logError(e.toString());
+      emit(NotResponsedFailure(errorModel: ErrorModel(message: e.toString())));
+    }
+  }
+
+
+
+
+
+
+
 }

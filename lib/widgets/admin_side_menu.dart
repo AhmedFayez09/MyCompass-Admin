@@ -2,41 +2,42 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/routes/routes_name.dart';
 
 class AdminSideMenu extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onIndexChanged;
 
-  AdminSideMenu({
+  const AdminSideMenu({
     super.key,
     required this.onIndexChanged,
     required this.selectedIndex,
   });
 
-  final List<Map<String, dynamic>> menuItems = [
+    List<Map<String, dynamic>> menuItems (BuildContext context)=> [
     {
-      "title": "إنشاء مستخدم",
+      "title": "CreateUser".tr(context),
       "svgSrc": "assets/icons/menu_dashboard.svg",
       "route": RoutesName.main
     },
     {
-      "title": "إنشاء روابط",
+      "title": "CreateLinks".tr(context),
       "svgSrc": "assets/icons/menu_tran.svg",
       "route": RoutesName.createLinks
     },
     {
-      "title": "دفع",
+      "title": "push".tr(context),
       "svgSrc": "assets/icons/menu_task.svg",
       "route": RoutesName.paid
     },
     {
-      "title": "تقارير الدفع",
+      "title": "PaymentReports".tr(context),
       "svgSrc": "assets/icons/menu_doc.svg",
       "route": RoutesName.paymentReports
     },
     {
-      "title": "الملف الشخصي",
+      "title": "Profile".tr(context),
       "svgSrc": "assets/icons/menu_profile.svg",
       "route": RoutesName.profile
     },
@@ -50,10 +51,10 @@ class AdminSideMenu extends StatelessWidget {
           DrawerHeader(
             child: Image.asset("assets/images/logo.png"),
           ),
-          ...List.generate(menuItems.length, (index) {
+          ...List.generate(menuItems(context).length, (index) {
             return DrawerListTile(
-              title: menuItems[index]["title"],
-              svgSrc: menuItems[index]["svgSrc"],
+              title: menuItems(context)[index]["title"],
+              svgSrc: menuItems(context)[index]["svgSrc"],
               isSelected: selectedIndex == index,
               press: () => onIndexChanged(index),
             );

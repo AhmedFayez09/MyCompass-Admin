@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
-import 'package:mycompass_admin_website/screens/admin/main/components/admin_dashboard_header.dart';
-import 'package:mycompass_admin_website/screens/admin/main/components/admin_my_fields.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/screens/admin/main/components/admin_recent_files.dart';
 
 class AdminRoomInspectionsScreen extends StatelessWidget {
@@ -15,7 +14,7 @@ class AdminRoomInspectionsScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('مراقبات الغرفة',
+          title: Text('RoomMonitors'.tr(context),
               style: Theme.of(context).textTheme.bodyLarge!),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/managers/family/family_cubit.dart';
 import 'package:mycompass_admin_website/routes/routes_name.dart';
@@ -24,6 +25,7 @@ class AdminTabletLoginForm extends StatelessWidget {
       listener: (context, state) {
         var loginCubit = AdminCubit.of(context);
 
+
         if (state is AdminLoginSuccess) {
           context.read<FamilyCubit>().getAllFamilies();
           loginCubit.getProfile();
@@ -34,7 +36,7 @@ class AdminTabletLoginForm extends StatelessWidget {
           );
           SnackbarWidget.show(
             context,
-            "Login Success",
+            "LoginSuccess".tr(context),
           );
         } else if (state is AdminLoginFailure) {
           SnackbarWidget.show(
@@ -81,8 +83,8 @@ class AdminTabletLoginForm extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: defaultPadding),
-                        const Text(
-                          'المعلومات الشخصية',
+                          Text(
+                          'personalInformation'.tr(context),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 24,
@@ -91,13 +93,13 @@ class AdminTabletLoginForm extends StatelessWidget {
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'البريد الإلكتروني',
+                          label: "email".tr(context),
                           hintText: 'example@gmail.com',
                           controller: emailController,
                         ),
                         const SizedBox(height: defaultPadding),
                         CustomTextField(
-                          label: 'كلمة المرور',
+                          label: "password".tr(context),
                           hintText: '********',
                           controller: passwordController,
                         ),
@@ -112,11 +114,11 @@ class AdminTabletLoginForm extends StatelessWidget {
                               password: passwordController.text,
                             );
                           },
-                          child: const Padding(
+                          child:   Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: defaultPadding * 8,
                                 vertical: defaultPadding * .6),
-                            child: Text('تسجيل الدخول'),
+                            child:Text("login".tr(context))
                           ),
                         ),
                       ],

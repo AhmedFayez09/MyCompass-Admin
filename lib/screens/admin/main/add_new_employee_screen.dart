@@ -247,6 +247,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/employees/employees_cubit.dart';
 import 'package:mycompass_admin_website/widgets/custom_textform_field.dart';
 import 'package:mycompass_admin_website/widgets/snackbar_widget.dart';
@@ -320,7 +321,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'إضافة موظف جديد',
+            'AddanewEmployee'.tr(context),
             style: Theme.of(context).textTheme.bodyLarge!,
           ),
           leading: IconButton(
@@ -348,8 +349,8 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالموظفين',
+                        Text(
+                        'EmployeeInformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -359,29 +360,29 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'أسم الموظف',
-                        hintText: 'أسم الموظف',
+                        label: 'EmployeeName'.tr(context),
+                        hintText:  'EmployeeName'.tr(context),
                         controller: nameController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'البريد الإلكتروني للموظف',
-                        hintText: 'البريد الإلكتروني للموظف',
+                        label: 'EmployeeEmail'.tr(context),
+                        hintText: 'EmployeeEmail'.tr(context),
                         controller: emailController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'الرقم السري للموظف',
-                        hintText: 'الرقم السري للموظف',
+                        label: 'Employeesecretnumber'.tr(context),
+                        hintText: 'Employeesecretnumber'.tr(context),
                         controller: passwordController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'رقم واتساب الموظف',
-                        hintText: 'رقم واتساب الموظف',
+                        label: 'EmployeeWhatsAppnumber'.tr(context),
+                        hintText: 'EmployeeWhatsAppnumber'.tr(context),
                         controller: phoneController,
                       ),
 
@@ -405,7 +406,8 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                       const SizedBox(height: defaultPadding),
 
                       Text(
-                        'اللغات المختارة:',
+
+"Selectedlanguages".tr(context),
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -439,7 +441,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                       const SizedBox(height: 20),
                       // Display selected languages
                       Text(
-                        'الايام المختارة:',
+                        'SelectedDays'.tr(context),
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -457,8 +459,8 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                       const SizedBox(height: defaultPadding),
 
                       // Work Specialization Section
-                      const Text(
-                        "التخصص في العمل",
+                        Text(
+                        "WorkSpecialization".tr(context),
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -474,8 +476,8 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                               children: [
                                 Expanded(
                                   child: CustomTextField(
-                                    label: 'تخصص العمل ${i + 1}',
-                                    hintText: 'اكتب تخصص العمل هنا',
+                                    label: ' ${"Workspecialization".tr(context)} ${i + 1}',
+                                    hintText: 'Writeyourjobspecializationhere'.tr(context),
                                     controller: workSpecializationControllers[i],
                                   ),
                                 ),
@@ -506,7 +508,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                             });
                           },
                           icon: const Icon(Icons.add),
-                          label: const Text("أضف تخصص عمل جديد"),
+                          label:   Text("Addanewjobspecialization".tr(context)),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(50, 30),
                             padding:
@@ -522,7 +524,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                           if (state is AddEmployeeSuccess) {
                             context.read<EmployeesCubit>().getAllEmployees();
                             Navigator.pop(context);
-                            SnackbarWidget.show(context, "تمت الاضافة بنجاح");
+                            SnackbarWidget.show(context, "Addedsuccessfully".tr(context));
                           } else if (state is AddEmployeeFailure) {
                             SnackbarWidget.show(
                               context,
@@ -560,7 +562,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                               width: 15,
                               child: CircularProgressIndicator(),
                             )
-                                : const Text('إضافة موظف جديد'),
+                                :   Text('Addanewemployee'.tr(context)),
                           );
                         },
                       ),

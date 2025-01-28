@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/post/post_cubit.dart';
 import 'package:mycompass_admin_website/widgets/custom_textform_field.dart';
 import 'package:mycompass_admin_website/widgets/snackbar_widget.dart';
@@ -32,13 +33,12 @@ class _AdminAddNewPostScreenState extends State<AdminAddNewPostScreen> {
       titleController.text = postConstants.title;
       contentController.text = postConstants.content;
     }
-    print("image ${postConstants?.postImageUrl}");
-    return Directionality(
+     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-              postConstants == null ? 'إضافة منشور جديد' : "تعديل المنشور",
+              postConstants == null ? 'Addnewpost'.tr(context) : "Editpost".tr(context),
               style: Theme.of(context).textTheme.bodyLarge!),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -89,8 +89,8 @@ class _AdminAddNewPostScreenState extends State<AdminAddNewPostScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالمنشور',
+                        Text(
+                        'PostInformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -100,15 +100,15 @@ class _AdminAddNewPostScreenState extends State<AdminAddNewPostScreen> {
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'عنوان المنشور',
-                        hintText: 'عنوان المنشور',
+                        label: 'PostTitle'.tr(context),
+                        hintText: 'PostTitle'.tr(context),
                         controller: titleController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'محتوي المنشور',
-                        hintText: 'محتوي المنشور',
+                        label: 'PostContent'.tr(context),
+                        hintText:'PostContent'.tr(context),
                         controller: contentController,
                         isContent: true,
                       ),
@@ -123,7 +123,7 @@ class _AdminAddNewPostScreenState extends State<AdminAddNewPostScreen> {
                                   : _editingPickImage();
                             }
                           },
-                          child: const Text("اضافة صورة")),
+                          child:   Text("AddImage".tr(context))),
                       const SizedBox(height: defaultPadding),
 
                       // in Web Case
@@ -187,24 +187,24 @@ class _AdminAddNewPostScreenState extends State<AdminAddNewPostScreen> {
                         listener: (context, state) {
                           if (state is AddPostSuccess) {
                             SnackbarWidget.show(
-                                context, "تم اضافة المنشور بنجاح");
+                                context, "Postaddedsuccessfully".tr(context));
                             context.read<PostCubit>().getAllPosts();
                             Navigator.pop(context);
                           } else if (state is AddPostFailure) {
                             SnackbarWidget.show(
                                 context,
                                 state.errorModel.message ??
-                                    'Error in Creating Post');
+                                    'ErrorinCreatingPost'.tr(context));
                           } else if (state is UpdatePostSuccess) {
                             SnackbarWidget.show(
-                                context, "تم تعديل المنشور بنجاح");
+                                context, "Posthasbeensuccessfullymodified".tr(context));
                             context.read<PostCubit>().getAllPosts();
                             Navigator.pop(context);
                           } else if (state is UpdatePostFailure) {
                             SnackbarWidget.show(
                                 context,
                                 state.errorModel.message ??
-                                    'Error in Updating Post');
+                                    'ErrorInUpdatingPost'.tr(context));
                           }
                         },
                         builder: (context, state) {
@@ -232,8 +232,8 @@ class _AdminAddNewPostScreenState extends State<AdminAddNewPostScreen> {
                                     width: 15,
                                     child: CircularProgressIndicator())
                                 : Text(postConstants == null
-                                    ? 'إضافة منشور جديد'
-                                    : "تعديل المنشور"),
+                                    ? 'Addnewpost'.tr(context)
+                                    : "Editpost".tr(context)),
                           );
                         },
                       ),

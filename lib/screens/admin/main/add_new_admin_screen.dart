@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit_fun/admin_fun_cubit.dart';
 import 'package:mycompass_admin_website/models/main/get_all_admins_data_model.dart';
 import 'package:mycompass_admin_website/widgets/custom_textform_field.dart';
@@ -33,8 +34,10 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('إضافة أدمن جديد',
-              style: Theme.of(context).textTheme.bodyLarge!),
+          title: Text(
+            'Addnewadmin'.tr(context),
+            style: Theme.of(context).textTheme.bodyLarge!,
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -60,8 +63,8 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'المعلومات الخاصة بالأدمنز',
+                        Text(
+                        'Admininformation'.tr(context),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -71,35 +74,35 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'أسم الأدمن',
-                        hintText: 'أسم الأدمن',
+                        label: 'Adminname'.tr(context),
+                        hintText:'Adminname'.tr(context),
                         controller: nameController,
                       ),
                       const SizedBox(height: defaultPadding),
 
                       CustomTextField(
-                        label: 'البريد الإلكتروني للأدمن',
-                        hintText: 'البريد الإلكتروني للأدمن',
+                        label: 'AdminEmail'.tr(context),
+                        hintText: 'AdminEmail'.tr(context),
                         controller: emailController,
                       ),
                       const SizedBox(height: defaultPadding),
                       CustomTextField(
-                        label: 'رقم واتساب الأدمن',
-                        hintText: 'رقم واتساب الأدمن',
+                        label: 'AdminWhatsAppNumber'.tr(context),
+                        hintText:  'AdminWhatsAppNumber'.tr(context),
                         controller: phoneController,
                       ),
                       const SizedBox(height: defaultPadding),
                       if (admin == null)
                         CustomTextField(
-                          label: 'كلمة المرور للأدمن',
-                          hintText: 'كلمة المرور للأدمن',
+                          label: 'Adminpassword'.tr(context),
+                          hintText: 'Adminpassword'.tr(context),
                           controller: passwordController,
                         ),
                       if (admin == null) const SizedBox(height: defaultPadding),
                       if (admin == null)
                         CustomTextField(
-                          label: "تأكيد كلمه المرور للأدمن",
-                          hintText: "تأكيد كلمه المرور للأدمن",
+                          label: "Confirmadminpassword".tr(context),
+                          hintText:  "Confirmadminpassword".tr(context),
                           controller: cPasswordController,
                         ),
                       const SizedBox(height: defaultPadding),
@@ -114,8 +117,8 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                               SnackBar(
                                 content: Text(
                                   admin == null
-                                      ? 'تم اضافة أدمن جديد بنجاح'
-                                      : "تم التعديل",
+                                      ? 'Newadminaddedsuccessfully'.tr(context)
+                                      : "Modified".tr(context),
                                 ),
                               ),
                             );
@@ -124,14 +127,14 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                    state.errorModel.message ?? 'حدث خطأ ما'),
+                                    state.errorModel.message ?? 'Somethingwentwrong'.tr(context)),
                               ),
                             );
                           } else if (state is UpdateAdminFailure) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                    state.errorModel.message ?? 'حدث خطأ ما'),
+                                    state.errorModel.message ?? 'Somethingwentwrong'.tr(context)),
                               ),
                             );
                           }
@@ -170,8 +173,8 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                                     child: CircularProgressIndicator())
                                 : Text(
                                     admin == null
-                                        ? 'إضافة  أدمن جديد'
-                                        : 'تعديل',
+                                        ? 'Addnewadmin'.tr(context)
+                                        : 'Modified'.tr(context),
                                   ),
                           );
                         },
@@ -181,14 +184,14 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                         Column(
                           children: [
                             CustomTextField(
-                              label: 'كلمة المرور القديمة',
-                              hintText: 'كلمة المرور القديمة',
+                              label: 'oldPassword'.tr(context),
+                              hintText: 'oldPassword'.tr(context),
                               controller: passwordController,
                             ),
                             const SizedBox(height: defaultPadding),
                             CustomTextField(
-                              label: "كلمه المرور الحديثة",
-                              hintText: "كلمه المرور الحديثة",
+                              label: "modernpassword".tr(context),
+                              hintText:  "modernpassword".tr(context),
                               controller: cPasswordController,
                             ),
                             const SizedBox(height: defaultPadding),
@@ -215,7 +218,7 @@ class _AddNewAdminScreenState extends State<AddNewAdminScreen> {
                                           newPassword: cPasswordController.text,
                                         );
                                   },
-                                  child: const Text("تغيير كلمة المرور"),
+                                  child:   Text("changepassword".tr(context)),
                                 );
                               },
                             ),
