@@ -28,32 +28,29 @@ class _AdminShowAllInStaffScreenState extends State<AdminShowAllInStaffScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Directionality(
-      textDirection: TextDirection.rtl,
-      child: SafeArea(
-        child: SingleChildScrollView(
-          primary: false,
-          padding: EdgeInsets.all(defaultPadding),
-          child: Column(
-            children: [
-              AdminDashboardHeader(),
-              SizedBox(height: defaultPadding),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      children: [
-                        MyAllEmployees(),
-                        SizedBox(height: defaultPadding),
-                      ],
-                    ),
+    return const SafeArea(
+      child: SingleChildScrollView(
+        primary: false,
+        padding: EdgeInsets.all(defaultPadding),
+        child: Column(
+          children: [
+            AdminDashboardHeader(),
+            SizedBox(height: defaultPadding),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: [
+                      MyAllEmployees(),
+                      SizedBox(height: defaultPadding),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

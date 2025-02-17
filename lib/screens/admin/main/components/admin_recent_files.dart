@@ -158,11 +158,7 @@ class AllFamiliesTable extends StatelessWidget {
                                     },
                                   );
                                 }),
-                                // rows: List.generate(
-                                //   demoRecentCustomers.length,
-                                //       (index) =>
-                                //       recentCustomerDataRow(demoRecentCustomers[index], context),
-                                // ),
+
                               );
                       },
                     ),

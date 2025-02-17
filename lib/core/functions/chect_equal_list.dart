@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
+import '../../routes/routes_name.dart';
+import '../local_storage/cache_helper.dart';
+
 bool areListsIdentical(List<String> list1, List<String> list2) {
   if (list1.length != list2.length) return false;
 
@@ -54,4 +57,12 @@ void zoomImage(BuildContext context, String? image) {
           ],
         ),
       ));
+}
+void logout(BuildContext context) async {
+  Navigator.pushNamedAndRemoveUntil(
+    context,
+    RoutesName.adminLogin,
+        (route) => false,
+  );
+  await CacheHelper.clearShared();
 }

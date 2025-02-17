@@ -37,207 +37,204 @@ class _AddNewImageToGalleryScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Addnewphotos'.tr(context),
-            style: Theme.of(context).textTheme.bodyLarge!,
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Back to previous screen
-            },
-          ),
-          backgroundColor: Colors.deepPurple,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Addnewphotos'.tr(context),
+          style: Theme.of(context).textTheme.bodyLarge!,
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(defaultPadding),
-            child: Column(
-              children: [
-                const SizedBox(height: defaultPadding),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Back to previous screen
+          },
+        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(defaultPadding),
+          child: Column(
+            children: [
+              const SizedBox(height: defaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Addimages".tr(context),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  ElevatedButton.icon(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 1.5,
+                        vertical: defaultPadding /
+                            (Responsive.isMobile(context) ? 2 : 1),
+                      ),
+                    ),
+                    onPressed: _addImage,
+                    icon: const Icon(Icons.add),
+                    label: Text(
+                      "Addimage".tr(context),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
+              CustomTextField(
+                label: "ImageTitle".tr(context),
+                hintText: "ImageTitle".tr(context),
+                controller: titleC,
+              ),
+              const SizedBox(height: defaultPadding),
+              CustomTextField(
+                label: "thedetails".tr(context),
+                hintText: "thedetails".tr(context),
+                controller: descriptionC,
+              ),
+              const SizedBox(height: defaultPadding),
+              Container(
+                padding: const EdgeInsets.all(defaultPadding),
+                decoration: const BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Addimages".tr(context),
+                      "SelectedImages".tr(context),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    ElevatedButton.icon(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: defaultPadding * 1.5,
-                          vertical: defaultPadding /
-                              (Responsive.isMobile(context) ? 2 : 1),
-                        ),
-                      ),
-                      onPressed: _addImage,
-                      icon: const Icon(Icons.add),
-                      label: Text(
-                        "Addimage".tr(context),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
+                    const SizedBox(height: defaultPadding),
+                    selectedImages.isNotEmpty
+                        ? GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: Responsive.isDesktop(context)
+                                  ? 4
+                                  : Responsive.isTablet(context)
+                                      ? 3
+                                      : 2,
+                              crossAxisSpacing: defaultPadding,
+                              mainAxisSpacing: defaultPadding,
+                              childAspectRatio: 1,
+                            ),
+                            itemCount: selectedImages.length,
+                            itemBuilder: (context, index) {
+                              final image = selectedImages[index];
+                              return Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color:
+                                              Colors.black.withOpacity(0.1),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8),
+                                        child: kIsWeb == true
+                                            ? Image.memory(
+                                                image.bytes!,
+                                                fit: BoxFit.fill,
+                                              )
+                                            : image.path != null
+                                                ? Image.file(
+                                                    File(image.path!),
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : SizedBox(
+                                                    child: Center(
+                                                      child: Text(
+                                                          'Novalidfilepath'
+                                                              .tr(context)),
+                                                    ),
+                                                  )),
+                                  ),
+                                  Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    child: IconButton(
+                                      onPressed: () => _removeImage(index),
+                                      icon: const Icon(
+                                        Iconsax.box_remove,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          )
+                        : Center(
+                            child: Text(
+                              "Nophotosaddedyet".tr(context),
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
                   ],
                 ),
-                CustomTextField(
-                  label: "ImageTitle".tr(context),
-                  hintText: "ImageTitle".tr(context),
-                  controller: titleC,
-                ),
-                const SizedBox(height: defaultPadding),
-                CustomTextField(
-                  label: "thedetails".tr(context),
-                  hintText: "thedetails".tr(context),
-                  controller: descriptionC,
-                ),
-                const SizedBox(height: defaultPadding),
-                Container(
-                  padding: const EdgeInsets.all(defaultPadding),
-                  decoration: const BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "SelectedImages".tr(context),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: defaultPadding),
-                      selectedImages.isNotEmpty
-                          ? GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: Responsive.isDesktop(context)
-                                    ? 4
-                                    : Responsive.isTablet(context)
-                                        ? 3
-                                        : 2,
-                                crossAxisSpacing: defaultPadding,
-                                mainAxisSpacing: defaultPadding,
-                                childAspectRatio: 1,
-                              ),
-                              itemCount: selectedImages.length,
-                              itemBuilder: (context, index) {
-                                final image = selectedImages[index];
-                                return Stack(
-                                  fit: StackFit.expand,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.1),
-                                            blurRadius: 4,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: kIsWeb == true
-                                              ? Image.memory(
-                                                  image.bytes!,
-                                                  fit: BoxFit.fill,
-                                                )
-                                              : image.path != null
-                                                  ? Image.file(
-                                                      File(image.path!),
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : SizedBox(
-                                                      child: Center(
-                                                        child: Text(
-                                                            'Novalidfilepath'
-                                                                .tr(context)),
-                                                      ),
-                                                    )),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      left: 0,
-                                      child: IconButton(
-                                        onPressed: () => _removeImage(index),
-                                        icon: const Icon(
-                                          Iconsax.box_remove,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            )
-                          : Center(
-                              child: Text(
-                                "Nophotosaddedyet".tr(context),
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: defaultPadding),
-                BlocConsumer<GalleryCubit, GalleryState>(
-                  listener: (context, state) {
-                    if (state is AddGallerySuccess) {
-                      context.read<GalleryCubit>().getAllGallery();
-                      Navigator.pop(context);
-                      SnackbarWidget.show(context,
-                          "Theoperationwascompletedsuccessfully".tr(context));
-                    } else if (state is AddGalleryFailure) {
-                      SnackbarWidget.show(
-                          context, state.errorModel.message ?? '');
-                    }
-                  },
-                  builder: (context, state) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        if (kIsWeb) {
-                          if (selectedImagesBytes != [] ||
-                              selectedImagesBytes.isNotEmpty) {
-                            print("in onTap : ${selectedImagesBytes.length}");
-                            context.read<GalleryCubit>().addGallery(
+              ),
+              const SizedBox(height: defaultPadding),
+              BlocConsumer<GalleryCubit, GalleryState>(
+                listener: (context, state) {
+                  if (state is AddGallerySuccess) {
+                    context.read<GalleryCubit>().getAllGallery();
+                    Navigator.pop(context);
+                    SnackbarWidget.show(context,
+                        "Theoperationwascompletedsuccessfully".tr(context));
+                  } else if (state is AddGalleryFailure) {
+                    SnackbarWidget.show(
+                        context, state.errorModel.message ?? '');
+                  }
+                },
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      if (kIsWeb) {
+                        if (selectedImagesBytes != [] ||
+                            selectedImagesBytes.isNotEmpty) {
+                          print("in onTap : ${selectedImagesBytes.length}");
+                          context.read<GalleryCubit>().addGallery(
+                              galleryTitle: titleC.text,
+                              galleryDescription: descriptionC.text,
+                              webImages: selectedImagesBytes);
+                        }
+                      } else {
+                        if (selectedImagesFiles == [] ||
+                            selectedImagesFiles.isEmpty) {
+                          SnackbarWidget.show(
+                              context, "Youmustaddanyimage".tr(context));
+                        } else {
+                          context.read<GalleryCubit>().addGallery(
                                 galleryTitle: titleC.text,
                                 galleryDescription: descriptionC.text,
-                                webImages: selectedImagesBytes);
-                          }
-                        } else {
-                          if (selectedImagesFiles == [] ||
-                              selectedImagesFiles.isEmpty) {
-                            SnackbarWidget.show(
-                                context, "Youmustaddanyimage".tr(context));
-                          } else {
-                            context.read<GalleryCubit>().addGallery(
-                                  galleryTitle: titleC.text,
-                                  galleryDescription: descriptionC.text,
-                                  galleryImages: selectedImagesFiles,
-                                );
-                          }
+                                galleryImages: selectedImagesFiles,
+                              );
                         }
-                      },
-                      child: state is AddGalleryLoading
-                          ? const SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: CircularProgressIndicator(),
-                            )
-                          : Text("save".tr(context)),
-                    );
-                  },
-                )
-              ],
-            ),
+                      }
+                    },
+                    child: state is AddGalleryLoading
+                        ? const SizedBox(
+                            height: 15,
+                            width: 15,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text("save".tr(context)),
+                  );
+                },
+              )
+            ],
           ),
         ),
       ),

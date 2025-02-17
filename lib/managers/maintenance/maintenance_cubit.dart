@@ -84,4 +84,43 @@ class MaintenanceCubit extends Cubit<MaintenanceState> {
           errorModel: ErrorModel(message: e.toString())));
     }
   }
+
+
+  void deleteMaintenances(String id)async{
+    emit(DeleteMaintenanceLoading());
+    try {
+      final response = await dioHelper.deleteData(
+          endPoint: ApiConstants.deleteMaintenanceUrl(id: id),
+          );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        emit(DeleteMaintenanceSuccess());
+      } else if (response.statusCode == 422 || response.statusCode == 404) {
+        final errorMessage =
+            response.data['message']?.toString() ?? 'Unknown error';
+        logError(errorMessage);
+        emit(DeleteMaintenanceFailure(
+            errorModel: ErrorModel(message: errorMessage)));
+      } else {
+        final errorMessage =
+            response.data['message']?.toString() ?? 'Error in Creating Family';
+        logError(errorMessage);
+        emit(DeleteMaintenanceFailure(
+            errorModel: ErrorModel(message: errorMessage)));
+      }
+    } catch (e) {
+      logError(e.toString());
+      emit(DeleteMaintenanceFailure(
+          errorModel: ErrorModel(message: e.toString())));
+    }
+  }
+
+
+
+
+
+
+
+
+
 }

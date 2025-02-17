@@ -56,247 +56,244 @@ class AddNewAnnouncementScreenState extends State<AddNewAnnouncementScreen> {
     }
     print("index $i");
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-              announcement == null
-                  ? 'Addnewad'.tr(context)
-                  : "EditAd".tr(context),
-              style: Theme.of(context).textTheme.bodyLarge!),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Back to previous screen
-            },
-          ),
-          backgroundColor: Colors.deepPurple,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            announcement == null
+                ? 'Addnewad'.tr(context)
+                : "EditAd".tr(context),
+            style: Theme.of(context).textTheme.bodyLarge!),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Back to previous screen
+          },
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(defaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: defaultPadding),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(defaultPadding),
-                  decoration: BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: BorderRadius.circular(defaultPadding / 2),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                        Text(
-                        'AdvertisingInformation'.tr(context),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(defaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: defaultPadding),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(defaultPadding),
+                decoration: BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.circular(defaultPadding / 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      Text(
+                      'AdvertisingInformation'.tr(context),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(height: defaultPadding),
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      CustomTextField(
-                        label: 'AdTitle'.tr(context),
-                        hintText:'AdTitle'.tr(context),
-                        controller: titleController,
-                      ),
-                      const SizedBox(height: defaultPadding),
+                    CustomTextField(
+                      label: 'AdTitle'.tr(context),
+                      hintText:'AdTitle'.tr(context),
+                      controller: titleController,
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      CustomTextField(
-                        label: 'Adcontent'.tr(context),
-                        hintText:  'Adcontent'.tr(context),
-                        controller: contentController,
-                        isContent: true,
-                      ),
-                      const SizedBox(height: defaultPadding),
+                    CustomTextField(
+                      label: 'Adcontent'.tr(context),
+                      hintText:  'Adcontent'.tr(context),
+                      controller: contentController,
+                      isContent: true,
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      // Type dropdown
-                      DropdownField(
-                        label: 'AdType'.tr(context),
-                        items: announcementTypes, // Example items
-                        selectedValue: selectedType,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedType = value;
-                            if (announcement != null) {
-                              editingType = value;
-                            }
-                          });
-                        },
-                      ),
+                    // Type dropdown
+                    DropdownField(
+                      label: 'AdType'.tr(context),
+                      items: announcementTypes, // Example items
+                      selectedValue: selectedType,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedType = value;
+                          if (announcement != null) {
+                            editingType = value;
+                          }
+                        });
+                      },
+                    ),
 
-                      const SizedBox(height: defaultPadding),
+                    const SizedBox(height: defaultPadding),
 
-                      DropdownField(
-                        label: 'Classification'.tr(context),
-                        items: priorities, // Example items
-                        selectedValue: selectedPriority,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedPriority = value;
-                            if (announcement != null) {
-                              editingPriority = value;
-                            }
-                          });
-                        },
-                      ),
-                      const SizedBox(height: defaultPadding),
-                      ElevatedButton(
-                          onPressed: () {
-                            if (kIsWeb) {
-                              _addImageInWeb();
-                            } else {
-                              announcement == null
-                                  ? _pickImage()
-                                  : _editingPickImage();
-                            }
-                          },
-                          child:   Text("Addimage".tr(context))),
-                      const SizedBox(height: defaultPadding),
-
-                      // in Web Case
-                      if (kIsWeb)
-                        SizedBox(
-                          child: selectedImageInWeb == null
-                              ? const SizedBox.shrink()
-                              : selectedImageInWeb is Uint8List
-                                  ? Image.memory(
-                                      selectedImageInWeb!,
-                                      fit: BoxFit.fill,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.3,
-                                    )
-                                  : Image.file(
-                                      File(selectedImageInWeb as String),
-                                      fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width *
-                                          0.5,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.3,
-                                    ),
-                        ),
-                      // in Mobile Case
-                      if (!kIsWeb)
-                        announcement?.imageUrl == null
-                            ? _selectedImage == null
-                                ? const SizedBox.shrink()
-                                : SizedBox(
-                                    height: 100,
-                                    child: Image.file(
-                                      _selectedImage!,
-                                      height: 200,
-                                    ),
-                                  )
-                            : editingSelectedImage == null
-                                ? SizedBox(
-                                    height: 200,
-                                    child: Image.network(
-                                      announcement?.imageUrl ?? '',
-                                      height: 200,
-                                    ),
-                                  )
-                                : SizedBox(
-                                    height: 100,
-                                    child: Image.file(
-                                      editingSelectedImage!,
-                                      height: 200,
-                                    ),
-                                  ),
-
-                      const SizedBox(height: defaultPadding),
-
-                      // Submit button
-                      BlocConsumer<AnnouncementCubit, AnnouncementState>(
-                        listener: (context, state) {
-                          var cubit = context.read<AnnouncementCubit>();
-
-                          if (state is AddNewAnnouncementSuccess) {
-                            Navigator.pop(context);
-                            SnackbarWidget.show(context, "Addedsuccessfully".tr(context));
-                          } else if (state is AddNewAnnouncementFailure) {
-                            SnackbarWidget.show(context,
-                                state.errorModel.message ?? 'Unknownerror'.tr(context));
-                          } else if (state is UpdateAnnouncementSuccess) {
-                            cubit.getAllAnnouncements();
-                            Navigator.pop(context);
-                            SnackbarWidget.show(context, "ModifiedSuccessfully".tr(context));
-                          } else if (state is UpdateAnnouncementFailure) {
-                            SnackbarWidget.show(context,
-                                state.errorModel.message ?? 'Unknownerror'.tr(context));
+                    DropdownField(
+                      label: 'Classification'.tr(context),
+                      items: priorities, // Example items
+                      selectedValue: selectedPriority,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedPriority = value;
+                          if (announcement != null) {
+                            editingPriority = value;
+                          }
+                        });
+                      },
+                    ),
+                    const SizedBox(height: defaultPadding),
+                    ElevatedButton(
+                        onPressed: () {
+                          if (kIsWeb) {
+                            _addImageInWeb();
+                          } else {
+                            announcement == null
+                                ? _pickImage()
+                                : _editingPickImage();
                           }
                         },
-                        builder: (context, state) {
-                          var cubit = context.read<AnnouncementCubit>();
-                          return ElevatedButton(
-                            onPressed: () {
-                              if (kIsWeb) {
-                                announcement == null
-                                    ? cubit.addNewAnnouncement(
-                                        title: titleController.text,
-                                        description: contentController.text,
-                                        priority: selectedPriority,
-                                        type: selectedType,
-                                        webImage:
-                                            selectedImageInWeb, // Pass Uint8List here for web
-                                      )
-                                    : cubit.updateAnnouncement(
-                                        id: announcement.id ?? '',
-                                        title: titleController.text,
-                                        description: contentController.text,
-                                        priority:
-                                            editingPriority ?? selectedPriority,
-                                        type: editingType ?? selectedType,
-                                        webImage: selectedImageInWeb,
-                                        // image: editingSelectedImage == null
-                                        //     ? null
-                                        //     : _selectedImage,
-                                      );
-                              } else {
-                                announcement == null
-                                    ? cubit.addNewAnnouncement(
-                                        title: titleController.text,
-                                        description: contentController.text,
-                                        priority: selectedPriority,
-                                        type: selectedType,
-                                        image: _selectedImage)
-                                    :
-                                    // print(contentController.text);
-                                    cubit.updateAnnouncement(
-                                        id: announcement.id ?? '',
-                                        title: titleController.text,
-                                        description: contentController.text,
-                                        priority: selectedPriority,
-                                        type: selectedType,
-                                        image: editingSelectedImage,
-                                      );
-                              }
-                            },
-                            child: state is AddNewAnnouncementLoading ||
-                                    state is UpdateAnnouncementLoading
-                                ? const SizedBox(
-                                    height: 15,
-                                    width: 15,
-                                    child: CircularProgressIndicator())
-                                : Text(announcement == null
-                                    ? 'Addnewad'.tr(context)
-                                    : "EditAd".tr(context)),
-                          );
-                        },
+                        child:   Text("Addimage".tr(context))),
+                    const SizedBox(height: defaultPadding),
+
+                    // in Web Case
+                    if (kIsWeb)
+                      SizedBox(
+                        child: selectedImageInWeb == null
+                            ? const SizedBox.shrink()
+                            : selectedImageInWeb is Uint8List
+                                ? Image.memory(
+                                    selectedImageInWeb!,
+                                    fit: BoxFit.fill,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.5,
+                                    height:
+                                        MediaQuery.of(context).size.width *
+                                            0.3,
+                                  )
+                                : Image.file(
+                                    File(selectedImageInWeb as String),
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.5,
+                                    height:
+                                        MediaQuery.of(context).size.width *
+                                            0.3,
+                                  ),
                       ),
-                    ],
-                  ),
+                    // in Mobile Case
+                    if (!kIsWeb)
+                      announcement?.imageUrl == null
+                          ? _selectedImage == null
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  height: 100,
+                                  child: Image.file(
+                                    _selectedImage!,
+                                    height: 200,
+                                  ),
+                                )
+                          : editingSelectedImage == null
+                              ? SizedBox(
+                                  height: 200,
+                                  child: Image.network(
+                                    announcement?.imageUrl ?? '',
+                                    height: 200,
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: 100,
+                                  child: Image.file(
+                                    editingSelectedImage!,
+                                    height: 200,
+                                  ),
+                                ),
+
+                    const SizedBox(height: defaultPadding),
+
+                    // Submit button
+                    BlocConsumer<AnnouncementCubit, AnnouncementState>(
+                      listener: (context, state) {
+                        var cubit = context.read<AnnouncementCubit>();
+
+                        if (state is AddNewAnnouncementSuccess) {
+                          Navigator.pop(context);
+                          SnackbarWidget.show(context, "Addedsuccessfully".tr(context));
+                        } else if (state is AddNewAnnouncementFailure) {
+                          SnackbarWidget.show(context,
+                              state.errorModel.message ?? 'Unknownerror'.tr(context));
+                        } else if (state is UpdateAnnouncementSuccess) {
+                          cubit.getAllAnnouncements();
+                          Navigator.pop(context);
+                          SnackbarWidget.show(context, "ModifiedSuccessfully".tr(context));
+                        } else if (state is UpdateAnnouncementFailure) {
+                          SnackbarWidget.show(context,
+                              state.errorModel.message ?? 'Unknownerror'.tr(context));
+                        }
+                      },
+                      builder: (context, state) {
+                        var cubit = context.read<AnnouncementCubit>();
+                        return ElevatedButton(
+                          onPressed: () {
+                            if (kIsWeb) {
+                              announcement == null
+                                  ? cubit.addNewAnnouncement(
+                                      title: titleController.text,
+                                      description: contentController.text,
+                                      priority: selectedPriority,
+                                      type: selectedType,
+                                      webImage:
+                                          selectedImageInWeb, // Pass Uint8List here for web
+                                    )
+                                  : cubit.updateAnnouncement(
+                                      id: announcement.id ?? '',
+                                      title: titleController.text,
+                                      description: contentController.text,
+                                      priority:
+                                          editingPriority ?? selectedPriority,
+                                      type: editingType ?? selectedType,
+                                      webImage: selectedImageInWeb,
+                                      // image: editingSelectedImage == null
+                                      //     ? null
+                                      //     : _selectedImage,
+                                    );
+                            } else {
+                              announcement == null
+                                  ? cubit.addNewAnnouncement(
+                                      title: titleController.text,
+                                      description: contentController.text,
+                                      priority: selectedPriority,
+                                      type: selectedType,
+                                      image: _selectedImage)
+                                  :
+                                  // print(contentController.text);
+                                  cubit.updateAnnouncement(
+                                      id: announcement.id ?? '',
+                                      title: titleController.text,
+                                      description: contentController.text,
+                                      priority: selectedPriority,
+                                      type: selectedType,
+                                      image: editingSelectedImage,
+                                    );
+                            }
+                          },
+                          child: state is AddNewAnnouncementLoading ||
+                                  state is UpdateAnnouncementLoading
+                              ? const SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator())
+                              : Text(announcement == null
+                                  ? 'Addnewad'.tr(context)
+                                  : "EditAd".tr(context)),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

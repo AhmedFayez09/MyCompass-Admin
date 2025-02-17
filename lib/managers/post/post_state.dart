@@ -10,6 +10,12 @@ final class GetAllPostsFailure extends PostState {
   final ErrorModel errorModel;
   GetAllPostsFailure({required this.errorModel});
 }
+final class DeleteAllPostsLoading extends PostState {}
+final class DeleteAllPostsSuccess extends PostState {}
+final class DeleteAllPostsFailure extends PostState {
+  final ErrorModel errorModel;
+  DeleteAllPostsFailure({required this.errorModel});
+}
 
 final class DeletePostLoading extends PostState {}
 final class DeletePostSuccess extends PostState {}

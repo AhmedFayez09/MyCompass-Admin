@@ -35,188 +35,185 @@ class UsersStatusScreen extends StatelessWidget {
 
         return list == null
             ? const Center(child: CircularProgressIndicator())
-            : Directionality(
-                textDirection: TextDirection.rtl,
-                child: SafeArea(
-                  child: Scaffold(
-                    body: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            : SafeArea(
+              child: Scaffold(
+                body: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  BackButton(),
-                                  Text(
-                                    "UserList".tr(context),
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
+                              BackButton(),
+                              Text(
+                                "UserList".tr(context),
+                                style:
+                                    Theme.of(context).textTheme.titleSmall,
+                              ),
+                              Text(
+                                "${"theirnumber".tr(context)} (${list.length ?? 0}) ",
+                                style:
+                                    Theme.of(context).textTheme.titleSmall,
+                              )
+                            ],
+                          ),
+                          TextButton(
+                              style: const ButtonStyle(
+                                padding:
+                                    WidgetStatePropertyAll(EdgeInsets.zero),
+                              ),
+                              onPressed: () {
+                                context
+                                    .read<AdminCubit>()
+                                    .getNotResponsed();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const UsersNotResponsedScreen(),
                                   ),
-                                  Text(
-                                    "${"theirnumber".tr(context)} (${list.length ?? 0}) ",
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  )
+                                );
+                              },
+                              child: Text(
+                                "Userswhodidnotrespond".tr(context),
+                                style: TextStyle(fontSize: 14),
+                              ))
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 2,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        OneList(list: oneList),
+                                  ));
+                            },
+                            child: Container(
+                              width:
+                                  MediaQuery.of(context).size.width * 0.6,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      '${"IamSafe".tr(context)} (${oneList?.length ?? 0})',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Image.asset(
+                                    "assets/images/1.jpg",
+                                    width: 100,
+                                  ),
                                 ],
                               ),
-                              TextButton(
-                                  style: const ButtonStyle(
-                                    padding:
-                                        WidgetStatePropertyAll(EdgeInsets.zero),
-                                  ),
-                                  onPressed: () {
-                                    context
-                                        .read<AdminCubit>()
-                                        .getNotResponsed();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            UsersNotResponsedScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: Text(
-                                    "Userswhodidnotrespond".tr(context),
-                                    style: TextStyle(fontSize: 14),
-                                  ))
-                            ],
+                            ),
                           ),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPadding * 2,
+                          const SizedBox(height: 20),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        TwoList(list: twoList),
+                                  ));
+                            },
+                            child: Container(
+                              width:
+                                  MediaQuery.of(context).size.width * 0.6,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      '${"Iamoutside".tr(context)} (${twoList?.length ?? 0})',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Image.asset(
+                                    "assets/images/2.jpg",
+                                    width: 100,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            OneList(list: oneList),
-                                      ));
-                                },
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          '${"IamSafe".tr(context)} (${oneList?.length ?? 0})',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Image.asset(
-                                        "assets/images/1.jpg",
-                                        width: 100,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                          const SizedBox(height: 20),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ThreeList(list: threeList),
+                                  ));
+                            },
+                            child: Container(
+                              width:
+                                  MediaQuery.of(context).size.width * 0.6,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              SizedBox(height: 20),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TwoList(list: twoList),
-                                      ));
-                                },
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    borderRadius: BorderRadius.circular(10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      '${"Ineedhelp".tr(context)} (${threeList?.length ?? 0})',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          '${"Iamoutside".tr(context)} (${twoList?.length ?? 0})',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Image.asset(
-                                        "assets/images/2.jpg",
-                                        width: 100,
-                                      ),
-                                    ],
+                                  const SizedBox(height: 10),
+                                  Image.asset(
+                                    "assets/images/3.jpg",
+                                    width: 100,
                                   ),
-                                ),
+                                ],
                               ),
-                              SizedBox(height: 20),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ThreeList(list: threeList),
-                                      ));
-                                },
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          '${"Ineedhelp".tr(context)} (${threeList?.length ?? 0})',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Image.asset(
-                                        "assets/images/3.jpg",
-                                        width: 100,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
+                            ),
                           ),
-                        ),
-                        Spacer(),
-                      ],
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
-                  ),
+                    const Spacer(),
+                  ],
                 ),
-              );
+              ),
+            );
       },
     );
   }

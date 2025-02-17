@@ -30,159 +30,156 @@ class _AdminShowAllGalleryScreenState extends State<AdminShowAllGalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        // Added Scaffold for better structure
-        body: SafeArea(
-          // Added SafeArea to avoid overlaps
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(defaultPadding),
-            child: Column(
-              children: [
-                const AdminDashboardHeader(),
-                const SizedBox(height: defaultPadding),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      // Added Scaffold for better structure
+      body: SafeArea(
+        // Added SafeArea to avoid overlaps
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(defaultPadding),
+          child: Column(
+            children: [
+              const AdminDashboardHeader(),
+              const SizedBox(height: defaultPadding),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Allphotos".tr(context),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  ElevatedButton.icon(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: defaultPadding * 1.5,
+                        vertical: defaultPadding /
+                            (Responsive.isMobile(context) ? 2 : 1),
+                      ),
+                    ),
+                    onPressed: () {
+                      print('Create');
+
+                      /// Todo: navigate to add new announcement screen
+                      Navigator.pushNamed(
+                          context, RoutesName.addNewImageToGallery);
+                    },
+                    icon: const Icon(Icons.add),
+                    label: Text("AddImages".tr(context),
+                        style: Theme.of(context).textTheme.bodyMedium),
+                  ),
+                ],
+              ),
+              // const SizedBox(height: defaultPadding),
+              BlocConsumer<GalleryCubit, GalleryState>(
+                listener: (context, state) {
+                  if (state is DeleteAllGallerySuccess) {
+                    context.read<GalleryCubit>().getAllGallery();
+                    SnackbarWidget.show(context, "DeletedSuccessfully".tr(context));
+                  }
+                },
+                builder: (context, state) {
+                  return Align(
+                    alignment: AlignmentDirectional.topEnd,
+                    child: TextButton(
+                        onPressed: () {
+                          context.read<GalleryCubit>().deleteAllGallery();
+                        },
+                        child: Text("DeleteAll".tr(context))),
+                  );
+                },
+              ),
+              Container(
+                padding: const EdgeInsets.all(defaultPadding),
+                decoration: const BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Allphotos".tr(context),
+                      "AllPhotos".tr(context),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    ElevatedButton.icon(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: defaultPadding * 1.5,
-                          vertical: defaultPadding /
-                              (Responsive.isMobile(context) ? 2 : 1),
-                        ),
-                      ),
-                      onPressed: () {
-                        print('Create');
-
-                        /// Todo: navigate to add new announcement screen
-                        Navigator.pushNamed(
-                            context, RoutesName.addNewImageToGallery);
+                    const SizedBox(height: defaultPadding),
+                    BlocConsumer<GalleryCubit, GalleryState>(
+                      listener: (context, state) {
+                        if (state is DeleteGallerySuccess) {
+                          context.read<GalleryCubit>().getAllGallery();
+                          SnackbarWidget.show(context, "Deletedsuccessfully".tr(context));
+                        } else if (state is DeleteGalleryFailure) {
+                          SnackbarWidget.show(context, "ErrorInDeleting".tr(context));
+                        }
                       },
-                      icon: const Icon(Icons.add),
-                      label: Text("AddImages".tr(context),
-                          style: Theme.of(context).textTheme.bodyMedium),
+                      builder: (context, state) {
+                        GalleryCubit cubit = context.read<GalleryCubit>();
+                        List<GalleryModelData>? list =
+                            cubit.galleryModel?.result;
+                        return list == null
+                            ? const Center(child: CircularProgressIndicator())
+                            : list.isEmpty
+                                ? const SizedBox.shrink()
+                                : GridView.builder(
+                                    shrinkWrap: true,
+                                    // Important for nested scrolling
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    // Disable GridView scrolling
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount:
+                                          Responsive.isDesktop(context)
+                                              ? 4
+                                              : Responsive.isTablet(context)
+                                                  ? 3
+                                                  : 2,
+                                      // Adjust count based on screen size
+                                      crossAxisSpacing: defaultPadding,
+                                      mainAxisSpacing: defaultPadding,
+                                      childAspectRatio: kIsWeb
+                                          ? 1.2
+                                          : 0.7, // Make images square (or adjust as needed)
+                                    ),
+                                    itemCount: list.length,
+                                    // images.length,
+                                    itemBuilder: (context, index) {
+                                      GalleryModelData item = list[index];
+                                      return AllGalleryItem(
+                                        title: item.galleryTitle,
+                                        description: item.galleryDescription,
+                                        image:
+                                        item.galleryImages?.length == 0 ? null :
+
+                                        item.galleryImages?.first
+                                                .imageUrl ??
+                                            '',
+                                        onTap: () => showListImage(item),
+                                        onTapDelete: () =>
+                                            cubit.deleteGallery(
+                                          id: item.sId ?? '',
+                                        ),
+                                        onTapEdit: () => Navigator.pushNamed(
+                                            context,
+                                            RoutesName
+                                                .adminEditImageToGalleryScreen,
+                                            arguments: GalleryData(
+                                              id: item.sId ?? '',
+                                              title: item.galleryTitle,
+                                              description:
+                                                  item.galleryDescription,
+                                              imageUrl: item.galleryImages
+                                                  ?.map(
+                                                      (e) => e.imageUrl ?? '')
+                                                  .toList(),
+                                            )),
+                                      );
+                                    },
+                                  );
+                      },
                     ),
                   ],
                 ),
-                // const SizedBox(height: defaultPadding),
-                BlocConsumer<GalleryCubit, GalleryState>(
-                  listener: (context, state) {
-                    if (state is DeleteAllGallerySuccess) {
-                      context.read<GalleryCubit>().getAllGallery();
-                      SnackbarWidget.show(context, "DeletedSuccessfully".tr(context));
-                    }
-                  },
-                  builder: (context, state) {
-                    return Align(
-                      alignment: AlignmentDirectional.topEnd,
-                      child: TextButton(
-                          onPressed: () {
-                            context.read<GalleryCubit>().deleteAllGallery();
-                          },
-                          child: Text("DeleteAll".tr(context))),
-                    );
-                  },
-                ),
-                Container(
-                  padding: const EdgeInsets.all(defaultPadding),
-                  decoration: const BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "AllPhotos".tr(context),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: defaultPadding),
-                      BlocConsumer<GalleryCubit, GalleryState>(
-                        listener: (context, state) {
-                          if (state is DeleteGallerySuccess) {
-                            context.read<GalleryCubit>().getAllGallery();
-                            SnackbarWidget.show(context, "Deletedsuccessfully".tr(context));
-                          } else if (state is DeleteGalleryFailure) {
-                            SnackbarWidget.show(context, "ErrorInDeleting".tr(context));
-                          }
-                        },
-                        builder: (context, state) {
-                          GalleryCubit cubit = context.read<GalleryCubit>();
-                          List<GalleryModelData>? list =
-                              cubit.galleryModel?.result;
-                          return list == null
-                              ? const Center(child: CircularProgressIndicator())
-                              : list.isEmpty
-                                  ? const SizedBox.shrink()
-                                  : GridView.builder(
-                                      shrinkWrap: true,
-                                      // Important for nested scrolling
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      // Disable GridView scrolling
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount:
-                                            Responsive.isDesktop(context)
-                                                ? 4
-                                                : Responsive.isTablet(context)
-                                                    ? 3
-                                                    : 2,
-                                        // Adjust count based on screen size
-                                        crossAxisSpacing: defaultPadding,
-                                        mainAxisSpacing: defaultPadding,
-                                        childAspectRatio: kIsWeb
-                                            ? 1.2
-                                            : 0.7, // Make images square (or adjust as needed)
-                                      ),
-                                      itemCount: list.length,
-                                      // images.length,
-                                      itemBuilder: (context, index) {
-                                        GalleryModelData item = list[index];
-                                        return AllGalleryItem(
-                                          title: item.galleryTitle,
-                                          description: item.galleryDescription,
-                                          image:
-                                          item.galleryImages?.length == 0 ? null :
-
-                                          item.galleryImages?.first
-                                                  .imageUrl ??
-                                              '',
-                                          onTap: () => showListImage(item),
-                                          onTapDelete: () =>
-                                              cubit.deleteGallery(
-                                            id: item.sId ?? '',
-                                          ),
-                                          onTapEdit: () => Navigator.pushNamed(
-                                              context,
-                                              RoutesName
-                                                  .adminEditImageToGalleryScreen,
-                                              arguments: GalleryData(
-                                                id: item.sId ?? '',
-                                                title: item.galleryTitle,
-                                                description:
-                                                    item.galleryDescription,
-                                                imageUrl: item.galleryImages
-                                                    ?.map(
-                                                        (e) => e.imageUrl ?? '')
-                                                    .toList(),
-                                              )),
-                                        );
-                                      },
-                                    );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

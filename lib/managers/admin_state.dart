@@ -80,4 +80,14 @@ final class NotResponsedFailure extends AdminState {
   NotResponsedFailure({required this.errorModel});
 
 }
+final class AddPrivacyPolicyLoading extends AdminState {}
+final class AddPrivacyPolicySuccess extends AdminState {}
+
+final class AddPrivacyPolicyFailure extends AdminState {
+  final ErrorModel errorModel;
+
+  AddPrivacyPolicyFailure({required this.errorModel});
+}
+
+
 

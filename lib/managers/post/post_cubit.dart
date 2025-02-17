@@ -50,6 +50,32 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  void deleteAllPosts() async {
+    emit(DeleteAllPostsLoading());
+    try {
+      final response =
+          await dioHelper.deleteData(endPoint: ApiConstants.deleteAllPostsUrl);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(DeleteAllPostsSuccess());
+      } else if (response.statusCode == 422 || response.statusCode == 404) {
+        final errorMessage =
+            response.data['message']?.toString() ?? 'Unknown error';
+        logError(errorMessage);
+        emit(DeleteAllPostsFailure(
+            errorModel: ErrorModel(message: errorMessage)));
+      } else {
+        final errorMessage =
+            response.data['message']?.toString() ?? 'Error in Creating Family';
+        logError(errorMessage);
+        emit(DeleteAllPostsFailure(
+            errorModel: ErrorModel(message: errorMessage)));
+      }
+    } catch (e) {
+      emit(
+          DeleteAllPostsFailure(errorModel: ErrorModel(message: e.toString())));
+    }
+  }
+
   void addPost({
     required String title,
     required String description,
@@ -220,7 +246,7 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
- void addPostLike({
+  void addPostLike({
     required String postId,
   }) async {
     emit(AddPostLikeLoading());
@@ -246,8 +272,6 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-
-
   void addPostUnLike({
     required String postId,
   }) async {
@@ -262,19 +286,19 @@ class PostCubit extends Cubit<PostState> {
         final errorMessage =
             response.data['message']?.toString() ?? 'Unknown error';
         logError(errorMessage);
-        emit(AddPostUnLikeFailure(errorModel: ErrorModel(message: errorMessage)));
+        emit(AddPostUnLikeFailure(
+            errorModel: ErrorModel(message: errorMessage)));
       } else {
         final errorMessage =
             response.data['message']?.toString() ?? 'Error in Creating Family';
         logError(errorMessage);
-        emit(AddPostUnLikeFailure(errorModel: ErrorModel(message: errorMessage)));
+        emit(AddPostUnLikeFailure(
+            errorModel: ErrorModel(message: errorMessage)));
       }
     } catch (e) {
       emit(AddPostUnLikeFailure(errorModel: ErrorModel(message: e.toString())));
     }
   }
-
-
 
   CommentModel? commentModel;
 
@@ -283,7 +307,6 @@ class PostCubit extends Cubit<PostState> {
     try {
       final response = await dioHelper.getData(
         endPoint: ApiConstants.getCommentsUrl(id: postId),
-
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         commentModel = CommentModel.fromJson(response.data);
@@ -303,13 +326,4 @@ class PostCubit extends Cubit<PostState> {
       emit(GetCommentFailure(errorModel: ErrorModel(message: e.toString())));
     }
   }
-
-
-
-
-
-
-
-
-
 }

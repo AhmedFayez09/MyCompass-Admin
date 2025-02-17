@@ -24,6 +24,8 @@ class ApiConstants {
   static const String getUserStatusUrl = 'admin/getAllResponses';
   static const String handleResponseUrl = 'operations/handleResponse';
   static const String getNonResponders = 'admin/getNonResponders';
+  static const String deleteAllPostsUrl = 'admin/deleteAllPosts';
+  static const String addPrivacyPolicy = 'admin/addPrivacy/67b09f91b9ce29759a0ca220';
 
   static   String deleteFamilyUrl ({required String id})=> 'user/deleteUser/$id';
   static   String deleteAdminUrl ({required String id})=> 'admin/deleteAdmin/$id';
@@ -44,5 +46,6 @@ class ApiConstants {
   static   String addPostUnLikeUrl ({required String id})=> 'operations/$id/postunlike';
   static   String getCommentsUrl ({required String id})=> 'operations/getComments/$id';
   static   String updateAdminUrl ({required String id})=> 'admin/updateAdmin/$id';
+  static   String deleteMaintenanceUrl ({required String id})=> 'admin/deleteSpMaintenance/$id';
 
 }

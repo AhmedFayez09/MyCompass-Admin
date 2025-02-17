@@ -110,8 +110,7 @@ class AdminMobileLoginForm extends StatelessWidget {
                           const SizedBox(height: defaultPadding * 2),
                           ElevatedButton(
                             onPressed: () {
-                              // Print all the form data
-                              loginCubit.login(
+                               loginCubit.login(
                                 email: emailController.text,
                                 password: passwordController.text,
                               );

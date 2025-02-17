@@ -38,6 +38,9 @@
   "Employeesecretnumber": "Employee secret number",
   "EmployeeWhatsAppnumber": "Employee WhatsApp number",
   "Selectedlanguages": "Selected languages",
+  "languages" : "languages",
+  "Writeyourlanguages": "Write your languages here",
+  "AddANewLanguages"  : "Add a new languages",
   "SelectedDays": "Selected Days",
   "SelectedDays": "Selected Days",
   "WorkSpecialization": "Work Specialization",
@@ -67,6 +70,7 @@
   "ListOfImages": "List of images",
   "SocialMediaList": "Social Media List",
   "ListShowalladmins": "List Show all admins",
+  "allAdmins": "All Admins",
   "Profile": "Profile",
   "PersonalInformation": "Personal Information",
   "AreYouSureYouWantToDeleteThePhoto": "Are you sure you want to delete the photo?",
@@ -103,6 +107,8 @@
   "Photoediting": "Photo editing",
   "AddImages": "Add Images",
   "ImageTitle": "Image Title",
+  "Dashboard" : "Dashboard",
+  "SearchHere": "Search Here",
   "Details": "Details",
   "AddedImages": "Added Images",
   "NoPictures": "No Pictures",
@@ -122,6 +128,7 @@
   "Addanewemployee": "Add a new employee",
   "AllEmployees" : "All Employees",
   "name": "name",
+
   "Procedure": "Procedure",
   "Pending" : "Pending",
   "Accepted": "Accepted",
@@ -154,7 +161,17 @@
   "push": "push",
   "PaymentReports": "Payment Reports",
   "Addacomment" : "Add a comment",
-  "Addareply": "Add a reply"
+  "Addareply": "Add a reply",
+  "logout" : "logout",
+  "PrivacyPolicy" : "Privacy Policy",
+  "NotificationInformation" : "Notification Information",
+  "Alarm" : "Alarm",
+  "AllFixes" : "All Fixes",
+  "AddPrivacyPolicy" : "Add Privacy Policy",
+  "EnterPrivacyPolicy" : "Enter Privacy Policy",
+  "AllCurrentFamilies" : "All current families",
+  "family" : "Family"
+
 
 
 

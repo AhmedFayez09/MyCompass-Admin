@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit.dart';
 import 'package:mycompass_admin_website/managers/admin_cubit_fun/admin_fun_cubit.dart';
@@ -30,31 +31,28 @@ class _ShowAllAdminsScreenState extends State<ShowAllAdminsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Directionality(
-      textDirection: TextDirection.rtl,
-      child: SingleChildScrollView(
-        primary: false,
-        padding: EdgeInsets.all(defaultPadding),
-        child: Column(
-          children: [
-            AdminDashboardHeader(),
-            SizedBox(height: defaultPadding),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: [
-                      Admins(),
-                      SizedBox(height: defaultPadding),
-                    ],
-                  ),
+    return   const SingleChildScrollView(
+      primary: false,
+      padding: EdgeInsets.all(defaultPadding),
+      child: Column(
+        children: [
+          AdminDashboardHeader(),
+          SizedBox(height: defaultPadding),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 5,
+                child: Column(
+                  children: [
+                    Admins(),
+                    SizedBox(height: defaultPadding),
+                  ],
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -73,7 +71,7 @@ class Admins extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "جميع الأدمنز",
+             "allAdmins".tr(context),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             ElevatedButton.icon(
@@ -90,7 +88,7 @@ class Admins extends StatelessWidget {
                 Navigator.pushNamed(context, RoutesName.addNewAdmin);
               },
               icon: const Icon(Icons.add),
-              label: Text("إضافة أدمن جديد",
+              label: Text("Addnewadmin".tr(context),
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
           ],
@@ -106,7 +104,7 @@ class Admins extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "جميع الأدمنز",
+                "allAdmins".tr(context),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: defaultPadding),
@@ -160,27 +158,27 @@ class Admins extends StatelessWidget {
   Widget buildRecentEmployees(
       BuildContext context, GetAllAdminsDataModel list) {
     return DataTable(
-        columns: const [
+        columns: [
           DataColumn(
             label: Text(
-              "الاسم",
+              "name".tr(context),
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           DataColumn(
             label: Text(
-              "البريد الإلكتروني",
+              "username".tr(context),
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           DataColumn(
             label: Text(
-              "رقم الهاتف",
+              "phoneNumber".tr(context),
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           DataColumn(
-            label: Text("الإجراء"), // Empty label for actions column
+            label: Text("Procedure".tr(context)), // Empty label for actions column
           ),
         ],
         rows: list.allAdmins
@@ -207,11 +205,11 @@ class Admins extends StatelessWidget {
                           IconButton(
                             icon: Responsive.isMobile(context)
                                 ? const Icon(Iconsax.edit)
-                                : const Row(
+                                :   Row(
                                     children: [
                                       Icon(Iconsax.edit),
                                       SizedBox(width: 5),
-                                      Text('تعديل'),
+                                      Text('Edit'.tr(context)),
                                     ],
                                   ),
                             color: Colors.lightBlue,
@@ -228,11 +226,11 @@ class Admins extends StatelessWidget {
                               return IconButton(
                                 icon: Responsive.isMobile(context)
                                     ? const Icon(Iconsax.profile_delete)
-                                    : const Row(
+                                    :   Row(
                                         children: [
                                           Icon(Iconsax.profile_delete),
                                           SizedBox(width: 5),
-                                          Text('حذف'),
+                                          Text('delete'.tr(context)),
                                         ],
                                       ),
                                 color: Colors.red,

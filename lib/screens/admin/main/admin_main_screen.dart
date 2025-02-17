@@ -64,33 +64,30 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        key: context.read<MenuAppController>().contractorOfficerScaffoldKey,
-        drawer: AdminSideMenu(
-          onIndexChanged: updateIndex,
-          selectedIndex: selectedIndex,
-        ),
-        body: SafeArea(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (Responsive.isDesktop(context))
-                Expanded(
-                  child: AdminSideMenu(
-                      onIndexChanged: updateIndex,
-                      selectedIndex: selectedIndex),
-                ),
+    return Scaffold(
+      key: context.read<MenuAppController>().contractorOfficerScaffoldKey,
+      drawer: AdminSideMenu(
+        onIndexChanged: updateIndex,
+        selectedIndex: selectedIndex,
+      ),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (Responsive.isDesktop(context))
               Expanded(
-                flex: 5,
-                child: IndexedStack(
-                  index: selectedIndex,
-                  children: screens,
-                ),
+                child: AdminSideMenu(
+                    onIndexChanged: updateIndex,
+                    selectedIndex: selectedIndex),
               ),
-            ],
-          ),
+            Expanded(
+              flex: 5,
+              child: IndexedStack(
+                index: selectedIndex,
+                children: screens,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -333,6 +333,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycompass_admin_website/core/constants.dart';
 import 'package:mycompass_admin_website/core/functions/chect_equal_list.dart';
 import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
+
 // import 'package:mycompass_admin_website/core/functions/check_equal_list.dart';
 import 'package:mycompass_admin_website/managers/employees/employees_cubit.dart';
 import 'package:mycompass_admin_website/models/employee_model.dart';
@@ -352,14 +353,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   final phoneController = TextEditingController();
   final List<TextEditingController> workSpecializationControllers = [];
 
-  final List<String> languages = [
-    "English",
-    "Mandarin Chinese",
-    "Spanish",
-    "Hindi",
-    "Arabic",
-    "French",
-  ];
+  final List<TextEditingController> languages = [];
 
   final List<String> daysList = [
     "Monday",
@@ -378,9 +372,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   @override
   void initState() {
     super.initState();
-    for (var language in languages) {
-      selectedLanguages[language] = false;
-    }
+
     for (var day in daysList) {
       selectedDays[day] = false;
     }
@@ -388,14 +380,19 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     // Pre-select languages and days based on employee data
     WidgetsBinding.instance.addPostFrameCallback((_) {
       EmployeeModelData employeeB =
-      ModalRoute.of(context)!.settings.arguments as EmployeeModelData;
+          ModalRoute.of(context)!.settings.arguments as EmployeeModelData;
       nameController.text = employeeB.userName ?? '';
       emailController.text = employeeB.email ?? '';
       phoneController.text = employeeB.phone ?? '';
 
       // Initialize specialization controllers
       for (var specialization in employeeB.workSpecialization ?? []) {
-        workSpecializationControllers.add(TextEditingController(text: specialization));
+        workSpecializationControllers
+            .add(TextEditingController(text: specialization));
+      }
+
+      for (var lang in employeeB.languages ?? []) {
+        languages.add(TextEditingController(text: lang));
       }
 
       if (employeeB.languages != null) {
@@ -427,236 +424,293 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   @override
   Widget build(BuildContext context) {
     EmployeeModelData employeeB =
-    ModalRoute.of(context)!.settings.arguments as EmployeeModelData;
+        ModalRoute.of(context)!.settings.arguments as EmployeeModelData;
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text( "Editemployeedata".tr(context),
-              style: Theme.of(context).textTheme.bodyLarge!),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Back to previous screen
-            },
-          ),
-          backgroundColor: Colors.deepPurple,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Editemployeedata".tr(context),
+            style: Theme.of(context).textTheme.bodyLarge!),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Back to previous screen
+          },
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(defaultPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: defaultPadding),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(defaultPadding),
-                  decoration: BoxDecoration(
-                    color: secondaryColor,
-                    borderRadius: BorderRadius.circular(defaultPadding / 2),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                        Text(
-                        'EmployeeInformation'.tr(context),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(defaultPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: defaultPadding),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(defaultPadding),
+                decoration: BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.circular(defaultPadding / 2),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'EmployeeInformation'.tr(context),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(height: defaultPadding),
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      CustomTextField(
-                        label: 'EmployeeName'.tr(context),
-                        hintText: 'EmployeeName'.tr(context),
-                        controller: nameController,
-                      ),
-                      const SizedBox(height: defaultPadding),
+                    CustomTextField(
+                      label: 'EmployeeName'.tr(context),
+                      hintText: 'EmployeeName'.tr(context),
+                      controller: nameController,
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      CustomTextField(
-                        label: "EmployeeEmail".tr(context),
-                        hintText:  "EmployeeEmail".tr(context),
-                        controller: emailController,
-                      ),
-                      const SizedBox(height: defaultPadding),
+                    CustomTextField(
+                      label: "EmployeeEmail".tr(context),
+                      hintText: "EmployeeEmail".tr(context),
+                      controller: emailController,
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      CustomTextField(
-                        label: 'EmployeeWhatsAppNumber'.tr(context),
-                        hintText:  'EmployeeWhatsAppNumber'.tr(context),
-                        controller: phoneController,
-                      ),
-                      const SizedBox(height: defaultPadding),
+                    CustomTextField(
+                      label: 'EmployeeWhatsAppNumber'.tr(context),
+                      hintText: 'EmployeeWhatsAppNumber'.tr(context),
+                      controller: phoneController,
+                    ),
+                    const SizedBox(height: defaultPadding),
 
-                      // Languages Section
-                      Column(
-                        children: languages.map((language) {
-                          return CheckboxListTile(
-                            title: Text(language),
-                            value: selectedLanguages[language],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                selectedLanguages[language] = value!;
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        "Selectedlanguages".tr(context),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        selectedLanguages.entries
-                            .where((entry) => entry.value)
-                            .map((entry) => entry.key)
-                            .join(', '),
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: defaultPadding),
-
-                      // Days Section
-                      Column(
-                        children: daysList.map((day) {
-                          return CheckboxListTile(
-                            title: Text(day),
-                            value: selectedDays[day],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                selectedDays[day] = value!;
-                              });
-                            },
-                            controlAffinity: ListTileControlAffinity.leading,
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                 "SelectedDays".tr(context),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        selectedDays.entries
-                            .where((entry) => entry.value)
-                            .map((entry) => entry.key)
-                            .join(', '),
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: defaultPadding),
-
-                      // Work Specialization Section
-                        Text(
-                        "WorkSpecialization".tr(context),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: defaultPadding / 2),
-                      Column(
-                        children: [
-                          for (int i = 0; i < workSpecializationControllers.length; i++)
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextField(
-                                    label: ' ${"WorkSpecialization".tr(context)} ${i + 1}',
-                                    hintText: 'Writeyourjobspecializationhere'.tr(context),
-                                    controller: workSpecializationControllers[i],
-                                  ),
+                    // Languages Section
+                    Text(
+                      "Selectedlanguages".tr(context),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Column(
+                      children: [
+                        for (int i = 0; i < languages.length; i++)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  label:
+                                      ' ${"languages".tr(context)} ${i + 1}',
+                                  hintText: 'Writeyourlanguages'.tr(context),
+                                  controller: languages[i],
                                 ),
-                                const SizedBox(width: 8),
-                                IconButton(
-                                  icon: const Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () {
-                                    setState(() {
-                                      workSpecializationControllers.removeAt(i);
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.red),
+                                onPressed: () {
+                                  setState(() {
+                                    languages.removeAt(i);
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                    // Column(
+                    //   children: languages.map((language) {
+                    //     return CheckboxListTile(
+                    //       title: Text(language),
+                    //       value: selectedLanguages[language],
+                    //       onChanged: (bool? value) {
+                    //         setState(() {
+                    //           selectedLanguages[language] = value!;
+                    //         });
+                    //       },
+                    //       controlAffinity: ListTileControlAffinity.leading,
+                    //     );
+                    //   }).toList(),
+                    // ),
+                    // const SizedBox(height: 20),
+                    // Text(
+                    //   "Selectedlanguages".tr(context),
+                    //   style: const TextStyle(
+                    //       fontSize: 16, fontWeight: FontWeight.bold),
+                    // ),
+                    // Text(
+                    //   selectedLanguages.entries
+                    //       .where((entry) => entry.value)
+                    //       .map((entry) => entry.key)
+                    //       .join(', '),
+                    //   style: const TextStyle(fontSize: 16),
+                    // ),
+                    const SizedBox(height: defaultPadding),
 
-                      // Button to Add New Work Specialization
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
+                    // Days Section
+                    Column(
+                      children: daysList.map((day) {
+                        return CheckboxListTile(
+                          title: Text(day),
+                          value: selectedDays[day],
+                          onChanged: (bool? value) {
                             setState(() {
-                              workSpecializationControllers.add(TextEditingController());
+                              selectedDays[day] = value!;
                             });
                           },
-                          icon: const Icon(Icons.add),
-                          label:   Text("Addanewjobspecialization".tr(context)),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size(50, 30),
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                          controlAffinity: ListTileControlAffinity.leading,
+                        );
+                      }).toList(),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "SelectedDays".tr(context),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      selectedDays.entries
+                          .where((entry) => entry.value)
+                          .map((entry) => entry.key)
+                          .join(', '),
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: defaultPadding),
+
+                    // Work Specialization Section
+                    Text(
+                      "WorkSpecialization".tr(context),
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: defaultPadding / 2),
+                    Column(
+                      children: [
+                        for (int i = 0;
+                            i < workSpecializationControllers.length;
+                            i++)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  label:
+                                      ' ${"WorkSpecialization".tr(context)} ${i + 1}',
+                                  hintText: 'Writeyourjobspecializationhere'
+                                      .tr(context),
+                                  controller:
+                                      workSpecializationControllers[i],
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              IconButton(
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.red),
+                                onPressed: () {
+                                  setState(() {
+                                    workSpecializationControllers.removeAt(i);
+                                  });
+                                },
+                              ),
+                            ],
                           ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Button to Add New Work Specialization
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            workSpecializationControllers
+                                .add(TextEditingController());
+                          });
+                        },
+                        icon: const Icon(Icons.add),
+                        label: Text("Addanewjobspecialization".tr(context)),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(50, 30),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                         ),
                       ),
+                    ),
 
-                      const SizedBox(height: defaultPadding),
+                    const SizedBox(height: defaultPadding),
 
-                      // Submit button
-                      BlocConsumer<EmployeesCubit, EmployeesState>(
-                        listener: (context, state) {
-                          if (state is UpdateEmployeeSuccess) {
-                            context.read<EmployeesCubit>().getAllEmployees();
-                            Navigator.pop(context);
-                            SnackbarWidget.show(context, "ModifiedSuccessfully".tr(context));
-                          } else if (state is UpdateEmployeeFailure) {
-                            SnackbarWidget.show(
-                              context,
-                              state.errorModel.message ?? '',
-                            );
-                          }
-                        },
-                        builder: (context, state) {
-                          var lang = selectedLanguages.entries
-                              .where((entry) => entry.value)
-                              .map((entry) => entry.key)
-                              .toList();
-
-                          var days = selectedDays.entries
-                              .where((entry) => entry.value)
-                              .map((e) => e.key)
-                              .toList();
-
-                          var workSpecializations = workSpecializationControllers
-                              .map((controller) => controller.text)
-                              .toList();
-
-                          return ElevatedButton(
-                            onPressed: () {
-                              context.read<EmployeesCubit>().updateEmployee(
-                                id: employeeB.sId ?? '',
-                                userName: employeeB.userName == nameController.text ? null : nameController.text,
-                                phone: employeeB.phone == phoneController.text ? null : phoneController.text,
-                                languages: areListsIdentical(employeeB.languages ?? [], lang) ? null : lang,
-                                days: areListsIdentical(employeeB.days ?? [], days) ? null : days,
-                                workSpecialization : areListsIdentical(employeeB.workSpecialization ?? [], workSpecializations) ? null : workSpecializations,
-                              );
-                            },
-                            child: state is UpdateEmployeeLoading
-                                ? const SizedBox(
-                              height: 15,
-                              width: 15,
-                              child: CircularProgressIndicator(),
-                            )
-                                :   Text('Edit'.tr(context)),
+                    // Submit button
+                    BlocConsumer<EmployeesCubit, EmployeesState>(
+                      listener: (context, state) {
+                        if (state is UpdateEmployeeSuccess) {
+                          context.read<EmployeesCubit>().getAllEmployees();
+                          Navigator.pop(context);
+                          SnackbarWidget.show(
+                              context, "ModifiedSuccessfully".tr(context));
+                        } else if (state is UpdateEmployeeFailure) {
+                          SnackbarWidget.show(
+                            context,
+                            state.errorModel.message ?? '',
                           );
-                        },
-                      ),
-                    ],
-                  ),
+                        }
+                      },
+                      builder: (context, state) {
+                        var lang = selectedLanguages.entries
+                            .where((entry) => entry.value)
+                            .map((entry) => entry.key)
+                            .toList();
+
+                        var days = selectedDays.entries
+                            .where((entry) => entry.value)
+                            .map((e) => e.key)
+                            .toList();
+
+                        var workSpecializations =
+                            workSpecializationControllers
+                                .map((controller) => controller.text)
+                                .toList();
+
+                        return ElevatedButton(
+                          onPressed: () {
+                            context.read<EmployeesCubit>().updateEmployee(
+                                  id: employeeB.sId ?? '',
+                                  userName: employeeB.userName ==
+                                          nameController.text
+                                      ? null
+                                      : nameController.text,
+                                  phone:
+                                      employeeB.phone == phoneController.text
+                                          ? null
+                                          : phoneController.text,
+                                  languages: areListsIdentical(
+                                          employeeB.languages ?? [], lang)
+                                      ? null
+                                      : lang,
+                                  days: areListsIdentical(
+                                          employeeB.days ?? [], days)
+                                      ? null
+                                      : days,
+                                  workSpecialization: areListsIdentical(
+                                          employeeB.workSpecialization ?? [],
+                                          workSpecializations)
+                                      ? null
+                                      : workSpecializations,
+                                );
+                          },
+                          child: state is UpdateEmployeeLoading
+                              ? const SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Text('Edit'.tr(context)),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

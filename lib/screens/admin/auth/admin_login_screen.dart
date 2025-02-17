@@ -12,23 +12,20 @@ class AdminLoginScreen extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          child: Responsive(
-            mobile: AdminMobileLoginForm(
-              emailController: emailController,
-              passwordController: passwordController,
-            ),
-            tablet: AdminTabletLoginForm(
-              emailController: emailController,
-              passwordController: passwordController,
-            ),
-            desktop: AdminDesktopLoginForm(
-              emailController: emailController,
-              passwordController: passwordController,
-            ),
+    return Scaffold(
+      body: SafeArea(
+        child: Responsive(
+          mobile: AdminMobileLoginForm(
+            emailController: emailController,
+            passwordController: passwordController,
+          ),
+          tablet: AdminTabletLoginForm(
+            emailController: emailController,
+            passwordController: passwordController,
+          ),
+          desktop: AdminDesktopLoginForm(
+            emailController: emailController,
+            passwordController: passwordController,
           ),
         ),
       ),

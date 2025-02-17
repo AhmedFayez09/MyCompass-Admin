@@ -16,6 +16,7 @@ import 'package:mycompass_admin_website/managers/maintenance/maintenance_cubit.d
 import 'package:mycompass_admin_website/managers/post/post_cubit.dart';
 import 'package:mycompass_admin_website/screens/admin/main/admin_edit_image_to_gallery_screen.dart';
 import 'package:mycompass_admin_website/screens/admin/main/edit_employee_screen.dart';
+import 'package:mycompass_admin_website/screens/admin/main/privacy_policy_screen.dart';
 import 'package:mycompass_admin_website/screens/admin/main/user_status/one_list.dart';
 import 'package:mycompass_admin_website/screens/admin/main/users_status_screen.dart';
 import 'package:provider/provider.dart';
@@ -77,71 +78,77 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<LanguageCubit, Locale>(
         builder: (context, locale) {
-          return MaterialApp(
-            navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'My Compass Admin',
-            locale: locale,
-            supportedLocales: AppLocalizationsSetup.supportedLocales,
-            localeResolutionCallback:
-                AppLocalizationsSetup.localeResolutionCallback,
-            localizationsDelegates:
-                AppLocalizationsSetup.localizationsDelegates,
-            theme: ThemeData.dark().copyWith(
-              scaffoldBackgroundColor: bgColor,
-              textTheme:
-                  GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
-                      .apply(bodyColor: Colors.white),
-              canvasColor: secondaryColor,
+          return Directionality(
+            textDirection: TextDirection.ltr,
+
+            child: MaterialApp(
+              navigatorKey: navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'My Compass Admin',
+              locale: locale,
+              supportedLocales: AppLocalizationsSetup.supportedLocales,
+              localeResolutionCallback:
+                  AppLocalizationsSetup.localeResolutionCallback,
+              localizationsDelegates:
+                  AppLocalizationsSetup.localizationsDelegates,
+              theme: ThemeData.dark().copyWith(
+                scaffoldBackgroundColor: bgColor,
+                textTheme:
+                    GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+                        .apply(bodyColor: Colors.white),
+                canvasColor: secondaryColor,
+              ),
+              initialRoute: CacheHelper.getString(
+                            key: CacheKeys.token,
+                          ) ==
+                          null ||
+                      CacheHelper.getString(
+                            key: CacheKeys.token,
+                          ) ==
+                          ''
+                  ? RoutesName.adminLogin
+                  : RoutesName.adminMain,
+              routes: {
+                /// Admin Routes
+                RoutesName.adminMain: (context) => const AdminMainScreen(),
+                RoutesName.adminLogin: (context) => const AdminLoginScreen(),
+                RoutesName.addNewFamily: (context) => const AddNewFamilyScreen(),
+                RoutesName.adminCreateNewCustomer: (context) => const Scaffold(),
+                RoutesName.adminEditCustomerScreen: (context) => const Scaffold(),
+                RoutesName.adminProfile: (context) => const AdminProfileScreen(),
+                RoutesName.addNewAnnouncement: (context) =>
+                    const AddNewAnnouncementScreen(),
+                RoutesName.showAllAnnouncements: (context) =>
+                    const ShowAllAnnouncementsScreen(),
+                RoutesName.addNewEmployee: (context) =>
+                    const AddNewEmployeeScreen(),
+                RoutesName.adminShowAllGallery: (context) =>
+                    const AdminShowAllGalleryScreen(),
+                RoutesName.addNewImageToGallery: (context) =>
+                    const AddNewImageToGalleryScreen(),
+                RoutesName.showAllAdmins: (context) =>
+                    const ShowAllAdminsScreen(),
+                RoutesName.addNewAdmin: (context) => const AddNewAdminScreen(),
+                RoutesName.socialMediaForAdmin: (context) =>
+                    const AdminSocialMediaScreen(),
+                RoutesName.adminAddNewPost: (context) =>
+                    const AdminAddNewPostScreen(),
+                RoutesName.adminShowAllMaintanance: (context) =>
+                    const AdminShowAllMaintananceScreen(),
+                RoutesName.showAllRoomInspections: (context) =>
+                    const AdminRoomInspectionsScreen(),
+                RoutesName.editFamilyScreen: (context) =>
+                    const AdminEditFamilyScreen(),
+                RoutesName.adminEditImageToGalleryScreen: (context) =>
+                    const EditImageToGalleryScreen(),
+                RoutesName.editEmployeeScreen: (context) =>
+                    const EditEmployeeScreen(),
+                RoutesName.usersStatusScreen: (context) =>
+                    const UsersStatusScreen(),
+                RoutesName.privacyPolicy : (context) =>   PrivacyPolicy(),
+
+              },
             ),
-            initialRoute: CacheHelper.getString(
-                          key: CacheKeys.token,
-                        ) ==
-                        null ||
-                    CacheHelper.getString(
-                          key: CacheKeys.token,
-                        ) ==
-                        ''
-                ? RoutesName.adminLogin
-                : RoutesName.adminMain,
-            routes: {
-              /// Admin Routes
-              RoutesName.adminMain: (context) => const AdminMainScreen(),
-              RoutesName.adminLogin: (context) => const AdminLoginScreen(),
-              RoutesName.addNewFamily: (context) => const AddNewFamilyScreen(),
-              RoutesName.adminCreateNewCustomer: (context) => const Scaffold(),
-              RoutesName.adminEditCustomerScreen: (context) => const Scaffold(),
-              RoutesName.adminProfile: (context) => const AdminProfileScreen(),
-              RoutesName.addNewAnnouncement: (context) =>
-                  const AddNewAnnouncementScreen(),
-              RoutesName.showAllAnnouncements: (context) =>
-                  const ShowAllAnnouncementsScreen(),
-              RoutesName.addNewEmployee: (context) =>
-                  const AddNewEmployeeScreen(),
-              RoutesName.adminShowAllGallery: (context) =>
-                  const AdminShowAllGalleryScreen(),
-              RoutesName.addNewImageToGallery: (context) =>
-                  const AddNewImageToGalleryScreen(),
-              RoutesName.showAllAdmins: (context) =>
-                  const ShowAllAdminsScreen(),
-              RoutesName.addNewAdmin: (context) => const AddNewAdminScreen(),
-              RoutesName.socialMediaForAdmin: (context) =>
-                  const AdminSocialMediaScreen(),
-              RoutesName.adminAddNewPost: (context) =>
-                  const AdminAddNewPostScreen(),
-              RoutesName.adminShowAllMaintanance: (context) =>
-                  const AdminShowAllMaintananceScreen(),
-              RoutesName.showAllRoomInspections: (context) =>
-                  const AdminRoomInspectionsScreen(),
-              RoutesName.editFamilyScreen: (context) =>
-                  const AdminEditFamilyScreen(),
-              RoutesName.adminEditImageToGalleryScreen: (context) =>
-                  const EditImageToGalleryScreen(),
-              RoutesName.editEmployeeScreen: (context) =>
-                  const EditEmployeeScreen(),
-              RoutesName.usersStatusScreen: (context) =>
-                  const UsersStatusScreen(),
-            },
           );
         },
       ),

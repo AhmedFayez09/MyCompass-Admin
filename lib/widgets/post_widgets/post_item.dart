@@ -102,7 +102,6 @@ class PostItem extends StatelessWidget {
               Image.network(
                 imageUrl!,
                 height: !kIsWeb ? 100 : 400,
-
               ),
 
             const SizedBox(height: defaultPadding / 2),
@@ -118,7 +117,7 @@ class PostItem extends StatelessWidget {
                           onPressed: onLikePress,
                           icon: Icon(
                             Iconsax.like_15,
-                             color: liked ? Colors.red : Colors.grey,
+                            color: liked ? Colors.red : Colors.grey,
                           ),
                         ),
                         if (likeCount != null) Text("$likeCount"),
@@ -140,7 +139,7 @@ class PostItem extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: onShowComments,
-                  child:   Text("comments".tr(context)),
+                  child: Text("comments".tr(context)),
                 ),
               ],
             ),

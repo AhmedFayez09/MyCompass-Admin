@@ -20,4 +20,12 @@ final class ChangeMaintenanceStateFailure extends MaintenanceState {
   ChangeMaintenanceStateFailure({required this.errorModel});
 
 }
+final class DeleteMaintenanceLoading extends MaintenanceState {}
+final class DeleteMaintenanceSuccess extends MaintenanceState {}
+final class DeleteMaintenanceFailure extends MaintenanceState {
+  final ErrorModel errorModel;
+
+  DeleteMaintenanceFailure({required this.errorModel});
+
+}
 

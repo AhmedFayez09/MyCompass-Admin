@@ -288,7 +288,9 @@ class AdminCubit extends Cubit<AdminState> {
   void showLocalNotification({required String title, required String body}) {
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: DateTime.now().millisecondsSinceEpoch,
+        id: DateTime
+            .now()
+            .millisecondsSinceEpoch,
         channelKey: 'basic_channel',
         title: title,
         body: body,
@@ -329,7 +331,8 @@ class AdminCubit extends Cubit<AdminState> {
           value: userDataModel.result!.sId ?? '',
         );
         logSuccess(
-            'Login successful, email is ${CacheHelper.getString(key: CacheKeys.email)}');
+            'Login successful, email is ${CacheHelper.getString(
+                key: CacheKeys.email)}');
         emit(AdminLoginSuccess(
           message: 'Reset code sent to email. Please verify the code.',
         ));
@@ -358,7 +361,7 @@ class AdminCubit extends Cubit<AdminState> {
     emit(GetProfileLoading());
     try {
       final response =
-          await dioHelper.getData(endPoint: ApiConstants.getProfileUrl);
+      await dioHelper.getData(endPoint: ApiConstants.getProfileUrl);
       if (response.statusCode == 200 || response.statusCode == 201) {
         profileModel = ProfileModel.fromJson(response.data);
         print("profile data ${response.data}");
@@ -387,7 +390,7 @@ class AdminCubit extends Cubit<AdminState> {
     emit(GetAllEmployeesAndFamiliesIsdLoading());
     try {
       final response =
-          await dioHelper.getData(endPoint: ApiConstants.getAllIsdUrl);
+      await dioHelper.getData(endPoint: ApiConstants.getAllIsdUrl);
       if (response.statusCode == 200 || response.statusCode == 201) {
         idsModel = IdsModel.fromJson(response.data);
         emit(GetAllEmployeesAndFamiliesIsdSuccess());
@@ -417,7 +420,7 @@ class AdminCubit extends Cubit<AdminState> {
     emit(GetUsersStatesLoading());
     try {
       final response =
-          await dioHelper.getData(endPoint: ApiConstants.getUserStatusUrl);
+      await dioHelper.getData(endPoint: ApiConstants.getUserStatusUrl);
       if (response.statusCode == 200 || response.statusCode == 201) {
         usersStatusModel = UsersStatusModel.fromJson(response.data);
         emit(GetUsersStatesSuccess());
@@ -442,13 +445,11 @@ class AdminCubit extends Cubit<AdminState> {
   }
 
 
-
   NonResponsedModel? nonResponsedModel;
 
   void getNotResponsed() async {
     emit(NotResponsedLoading());
     try {
-
       final response = await dioHelper.getData(
         endPoint: ApiConstants.getNonResponders,
       );
@@ -475,9 +476,38 @@ class AdminCubit extends Cubit<AdminState> {
   }
 
 
-
-
-
-
-
+  void addPrivacyPolicy({
+    required String privacy
+  }) async {
+    emit(AddPrivacyPolicyLoading());
+    try {
+      final response = await dioHelper.postData(
+        endPoint: ApiConstants.addPrivacyPolicy,
+        body: {
+          'privacy': privacy,
+        },
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(AddPrivacyPolicySuccess());
+      } else if (response.statusCode == 422 || response.statusCode == 404) {
+        final errorMessage =
+            response.data['Error']?.toString() ?? 'Unknown error';
+        logError(errorMessage);
+        emit(
+            AddPrivacyPolicyFailure(
+                errorModel: ErrorModel(message: errorMessage)));
+      } else {
+        final errorMessage =
+            response.data['message']?.toString() ?? 'Error in Creating Family';
+        logError(errorMessage);
+        emit(
+            AddPrivacyPolicyFailure(
+                errorModel: ErrorModel(message: errorMessage)));
+      }
+    } catch (e) {
+      logError(e.toString());
+      emit(AddPrivacyPolicyFailure(
+          errorModel: ErrorModel(message: e.toString())));
+    }
+  }
 }

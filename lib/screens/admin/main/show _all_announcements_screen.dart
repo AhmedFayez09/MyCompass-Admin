@@ -29,83 +29,80 @@ class ShowAllAnnouncementsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: BlocConsumer<AnnouncementCubit, AnnouncementState>(
-        listener: (context, state) {
-          var cubit = context.read<AnnouncementCubit>();
+    return BlocConsumer<AnnouncementCubit, AnnouncementState>(
+      listener: (context, state) {
+        var cubit = context.read<AnnouncementCubit>();
 
-          if (state is DeleteAllAnnouncementSuccess ||
-              state is DeleteAnnouncementSuccess) {
-            cubit.getAllAnnouncements();
-          }
-        },
-        builder: (context, state) {
-          var cubit = context.read<AnnouncementCubit>();
-          var model = cubit.announcementModel;
-          var list = model?.result;
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Viewallads'.tr(context),
-                  style: Theme.of(context).textTheme.bodyLarge!),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
+        if (state is DeleteAllAnnouncementSuccess ||
+            state is DeleteAnnouncementSuccess) {
+          cubit.getAllAnnouncements();
+        }
+      },
+      builder: (context, state) {
+        var cubit = context.read<AnnouncementCubit>();
+        var model = cubit.announcementModel;
+        var list = model?.result;
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Viewallads'.tr(context),
+                style: Theme.of(context).textTheme.bodyLarge!),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            actions: [
+              IconButton(
+                icon:   Text("Clearall".tr(context)),
                 onPressed: () {
-                  Navigator.pop(context);
+                  context.read<AnnouncementCubit>().deleteAllAnnouncements();
                 },
               ),
-              actions: [
-                IconButton(
-                  icon:   Text("Clearall".tr(context)),
-                  onPressed: () {
-                    context.read<AnnouncementCubit>().deleteAllAnnouncements();
-                  },
-                ),
-              ],
-              backgroundColor: Colors.deepPurple,
-            ),
-            body: SafeArea(
-              child: list == null ||
-                      state is DeleteAnnouncementLoading ||
-                      state is GetAllAnnouncementLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : list.isEmpty
-                      ?   Center(child: Text('Noads'.tr(context)))
-                      : ListView.builder(
-                          itemCount: list.length,
-                          itemBuilder: (context, index) {
-                            var item = list[index];
-                            return AnnouncementCard(
-                              announcement: Announcement(
-                                  title: item.announcementTitle ?? '',
-                                  content: item.announcementDesc ?? '',
-                                  type: item.type ?? '',
-                                  priority: item.priority ?? '',
-                                  imageUrl: item.announcementAttach),
-                              onPressedEditAnnouncement: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  RoutesName.addNewAnnouncement,
-                                  arguments: Announcement(
-                                      id: item.sId ?? '',
-                                      title: item.announcementTitle ?? '',
-                                      content: item.announcementDesc ?? '',
-                                      type: item.type ?? '',
-                                      priority: item.priority ?? '',
-                                      imageUrl: item.announcementAttach),
-                                );
-                              },
-                              onPressedDeleteAnnouncement: () =>
-                                  cubit.deleteAnnouncement(
-                                id: item.sId ?? '',
-                              ),
-                            );
-                          },
-                        ),
-            ),
-          );
-        },
-      ),
+            ],
+            backgroundColor: Colors.deepPurple,
+          ),
+          body: SafeArea(
+            child: list == null ||
+                    state is DeleteAnnouncementLoading ||
+                    state is GetAllAnnouncementLoading
+                ? const Center(child: CircularProgressIndicator())
+                : list.isEmpty
+                    ?   Center(child: Text('Noads'.tr(context)))
+                    : ListView.builder(
+                        itemCount: list.length,
+                        itemBuilder: (context, index) {
+                          var item = list[index];
+                          return AnnouncementCard(
+                            announcement: Announcement(
+                                title: item.announcementTitle ?? '',
+                                content: item.announcementDesc ?? '',
+                                type: item.type ?? '',
+                                priority: item.priority ?? '',
+                                imageUrl: item.announcementAttach),
+                            onPressedEditAnnouncement: () {
+                              Navigator.pushNamed(
+                                context,
+                                RoutesName.addNewAnnouncement,
+                                arguments: Announcement(
+                                    id: item.sId ?? '',
+                                    title: item.announcementTitle ?? '',
+                                    content: item.announcementDesc ?? '',
+                                    type: item.type ?? '',
+                                    priority: item.priority ?? '',
+                                    imageUrl: item.announcementAttach),
+                              );
+                            },
+                            onPressedDeleteAnnouncement: () =>
+                                cubit.deleteAnnouncement(
+                              id: item.sId ?? '',
+                            ),
+                          );
+                        },
+                      ),
+          ),
+        );
+      },
     );
   }
 }

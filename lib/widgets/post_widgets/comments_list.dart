@@ -8,15 +8,11 @@ import 'package:mycompass_admin_website/widgets/snackbar_widget.dart';
 import '../../core/constants.dart';
 import '../../models/comment_model.dart';
 import '../../models/post_model.dart';
+import 'comment_widget_item.dart';
 
 class CommentsList extends StatefulWidget {
-  CommentsList({
-    super.key,
-    // required this.comments,
-    required this.pastId,
-  });
+  const CommentsList({super.key, required this.pastId});
 
-  // final List<Comments> comments;
   final String pastId;
 
   @override
@@ -58,138 +54,214 @@ class _CommentsListState extends State<CommentsList> {
       listener: (context, state) {
         if (state is AddCommentSuccess) {
           commentController.clear();
-          Navigator.pop(context);
+          // Navigator.pop(context);
           context.read<PostCubit>().getComment(postId: widget.pastId);
         }
         if (state is AddReplaySuccess) {
           addReplay = false;
           commentController.clear();
-          Navigator.pop(context);
+          // Navigator.pop(context);
           context.read<PostCubit>().getAllPosts();
+          context.read<PostCubit>().getComment(postId: widget.pastId);
+
         }
       },
       builder: (context, state) {
         var cubit = context.read<PostCubit>();
         var comments = cubit.commentModel?.comments;
-        return comments == null || state is GetCommentLoading
+        return comments == null
+            // || state is GetCommentLoading
             ? const Center(child: CircularProgressIndicator())
             : Directionality(
                 textDirection: TextDirection.rtl,
                 child: Dialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
-                  child: Stack(
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: defaultPadding,
-                          right: defaultPadding,
-                          bottom: defaultPadding * 3,
-                          left: defaultPadding,
-                        ),
-                        color: Colors.grey.shade900,
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "comments".tr(context),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(color: Colors.white),
-                              ),
-                              const SizedBox(height: defaultPadding),
-                              ...comments.map<Widget>((comment) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                  child: Container(
+                    padding: const EdgeInsets.all(defaultPadding),
+                    color: secondaryColor.withOpacity(0.3),
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "comments".tr(context),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(color: Colors.white),
+                                ),
+                                const SizedBox(height: defaultPadding),
+                                state is GetCommentLoading
+                                    ? const Center(
+                                        child: CircularProgressIndicator())
+                                    : Column(
                                         children: [
-                                          Flexible(
-                                            child: Text(
-                                              comment.commentContent ??
-                                                  'Nocomment'.tr(context),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium!
-                                                  .copyWith(
-                                                      color: Colors.white),
-                                            ),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                commentId = comment.sId;
-                                                addReplay = true;
-                                                _scrollController
-                                                    .addListener(_onScroll);
-                                              });
-                                            },
-                                            child:   Text(
-                                              "reply".tr(context),
-                                              style:
-                                                  TextStyle(color: Colors.blue),
-                                            ),
-                                          ),
+                                          ...comments.map<Widget>((comment) {
+                                            return CommentWidgetItem(
+                                              comment: comment,
+                                              onReplay: () {
+                                                setState(() {
+                                                  commentId = comment.sId;
+                                                  addReplay = true;
+                                                });
+                                              },
+                                            );
+                                          }),
                                         ],
-                                      ),
-                                      if (comment.reply?.isNotEmpty ?? false)
-                                        Align(
-                                          alignment:
-                                              AlignmentDirectional.topStart,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              showReplyDialog(
-                                                  reply: comment.reply ?? []);
-                                              // comment.reply ?? []);
-                                            },
-                                            child:   Text("ViewResponses".tr(
-                                                context)),
-                                          ),
-                                        ),
-                                      const Divider(color: Colors.white),
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ],
+                                      )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      AddCommentTextField(
-                        controller: commentController,
-                        addReplay: addReplay,
-                        load: state is AddCommentLoading ||
-                            state is AddReplayLoading,
-                        onSend: () {
-                          if (commentController.text.isEmpty) {
-                            SnackbarWidget.show(
-                                context, "Youcannotleavethefieldblank".tr(context));
-                          } else {
-                            if (addReplay == true) {
-                              cubit.addReplay(
-                                id: commentId ?? '',
-                                replay: commentController.text,
-                              );
+                        AddCommentTextField(
+                          controller: commentController,
+                          addReplay: addReplay,
+                          load: state is AddCommentLoading ||
+                              state is AddReplayLoading,
+                          onSend: () {
+                            if (commentController.text.isEmpty) {
+                              SnackbarWidget.show(
+                                  context, "لا يمكنك ترك الحقل فارغ");
                             } else {
-                              cubit.addComment(
-                                postId: widget.pastId,
-                                comment: commentController.text,
-                              );
+                              if (addReplay == true) {
+                                cubit.addReplay(
+                                  id: commentId ?? '',
+                                  replay: commentController.text,
+                                );
+                              } else {
+                                cubit.addComment(
+                                  postId: widget.pastId,
+                                  comment: commentController.text,
+                                );
+                              }
                             }
-                          }
-                        },
-                      ),
-                    ],
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+
+                // Dialog(
+                //   shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8)),
+                //   child: Stack(
+                //     alignment: AlignmentDirectional.bottomCenter,
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.only(
+                //           top: defaultPadding,
+                //           right: defaultPadding,
+                //           bottom: defaultPadding * 3,
+                //           left: defaultPadding,
+                //         ),
+                //         color: Colors.grey.shade900,
+                //         height: MediaQuery.of(context).size.height * 0.8,
+                //         child: SingleChildScrollView(
+                //           child: Column(
+                //             mainAxisSize: MainAxisSize.min,
+                //             children: [
+                //               Text(
+                //                 "comments".tr(context),
+                //                 style: Theme.of(context)
+                //                     .textTheme
+                //                     .titleMedium!
+                //                     .copyWith(color: Colors.white),
+                //               ),
+                //               const SizedBox(height: defaultPadding),
+                //               ...comments.map<Widget>((comment) {
+                //                 return Padding(
+                //                   padding:
+                //                       const EdgeInsets.symmetric(vertical: 2.0),
+                //                   child: Column(
+                //                     children: [
+                //                       Row(
+                //                         mainAxisAlignment:
+                //                             MainAxisAlignment.spaceBetween,
+                //                         children: [
+                //                           Flexible(
+                //                             child: Text(
+                //                               comment.commentContent ??
+                //                                   'Nocomment'.tr(context),
+                //                               style: Theme.of(context)
+                //                                   .textTheme
+                //                                   .bodyMedium!
+                //                                   .copyWith(
+                //                                       color: Colors.white),
+                //                             ),
+                //                           ),
+                //                           TextButton(
+                //                             onPressed: () {
+                //                               setState(() {
+                //                                 commentId = comment.sId;
+                //                                 addReplay = true;
+                //                                 _scrollController
+                //                                     .addListener(_onScroll);
+                //                               });
+                //                             },
+                //                             child: Text(
+                //                               "reply".tr(context),
+                //                               style:
+                //                                   TextStyle(color: Colors.blue),
+                //                             ),
+                //                           ),
+                //                         ],
+                //                       ),
+                //                       if (comment.reply?.isNotEmpty ?? false)
+                //                         Align(
+                //                           alignment:
+                //                               AlignmentDirectional.topStart,
+                //                           child: TextButton(
+                //                             onPressed: () {
+                //                               showReplyDialog(
+                //                                   reply: comment.reply ?? []);
+                //                               // comment.reply ?? []);
+                //                             },
+                //                             child: Text(
+                //                                 "ViewResponses".tr(context)),
+                //                           ),
+                //                         ),
+                //                       const Divider(color: Colors.white),
+                //                     ],
+                //                   ),
+                //                 );
+                //               }),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //       AddCommentTextField(
+                //         controller: commentController,
+                //         addReplay: addReplay,
+                //         load: state is AddCommentLoading ||
+                //             state is AddReplayLoading,
+                //         onSend: () {
+                //           if (commentController.text.isEmpty) {
+                //             SnackbarWidget.show(context,
+                //                 "Youcannotleavethefieldblank".tr(context));
+                //           } else {
+                //             if (addReplay == true) {
+                //               cubit.addReplay(
+                //                 id: commentId ?? '',
+                //                 replay: commentController.text,
+                //               );
+                //             } else {
+                //               cubit.addComment(
+                //                 postId: widget.pastId,
+                //                 comment: commentController.text,
+                //               );
+                //             }
+                //           }
+                //         },
+                //       ),
+                //     ],
+                //   ),
+                // ),
               );
       },
     );
@@ -235,7 +307,8 @@ class _CommentsListState extends State<CommentsList> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        reply.commentContent ?? 'NoResponse'.tr(context),
+                                        reply.commentContent ??
+                                            'NoResponse'.tr(context),
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium!

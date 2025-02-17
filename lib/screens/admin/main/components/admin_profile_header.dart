@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:mycompass_admin_website/screens/admin/main/components/admin_dashboard_header.dart';
 import 'package:provider/provider.dart';
 import 'package:mycompass_admin_website/controllers/menu_app_controller.dart';
@@ -25,7 +26,7 @@ class AdminProfileHeader extends StatelessWidget {
                 context.read<MenuAppController>().contractorOfficerControlMenu,
           ),
         Text(
-          isNotProfile == true ? title! : "الملف الشخصي",
+          isNotProfile == true ? title! : "Profile".tr(context),
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const Spacer(),

@@ -22,156 +22,100 @@ class _AdminShowAllMaintananceScreenState
     extends State<AdminShowAllMaintananceScreen> {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            // physics: NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(defaultPadding),
-            child: Column(
-              children: [
-                const AdminDashboardHeader(),
-                const SizedBox(height: defaultPadding),
-                Text(
-                  "AllFixes".tr(context),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: defaultPadding),
-                Container(
-                    padding: const EdgeInsets.all(defaultPadding),
-                    decoration: const BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: BlocBuilder<MaintenanceCubit, MaintenanceState>(
-                      builder: (context, state) {
-                        var model =
-                            context.read<MaintenanceCubit>().maintenanceModel;
-                        var list = model?.result;
-                        return list == null
-                            ? const Center(child: CircularProgressIndicator())
-                            : Column(
-                                children: list
-                                    .map((e) => MaintenanceItem(
-                                          date: e.createdAt ?? '',
-                                          title: e.categoryName ?? '',
-                                          description:
-                                              e.maintenanceDescription ?? '',
-                                          statusTags: [
-                                            MaintenanceTag(
-                                              text: e.priority ?? '',
-                                              color: e.priority == "High"
-                                                  ? Colors.redAccent
-                                                  : e.priority == "Medium"
-                                                      ? Colors.yellowAccent
-                                                      : Colors.orange,
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          // physics: NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(defaultPadding),
+          child: Column(
+            children: [
+              const AdminDashboardHeader(),
+              const SizedBox(height: defaultPadding),
+              Text(
+                "AllFixes".tr(context),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: defaultPadding),
+              Container(
+                  padding: const EdgeInsets.all(defaultPadding),
+                  decoration: const BoxDecoration(
+                    color: secondaryColor,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: BlocConsumer<MaintenanceCubit, MaintenanceState>(
+                    listener: (context, state) {
+                      if (state is DeleteMaintenanceSuccess) {
+                        context.read<MaintenanceCubit>().getAllMaintenances();
+                      }
+                    },
+                    builder: (context, state) {
+                      var model =
+                          context.read<MaintenanceCubit>().maintenanceModel;
+                      var list = model?.result;
+                      return list == null ||
+                              state is DeleteMaintenanceLoading ||
+                              state is DeleteMaintenanceSuccess
+                          ? const Center(child: CircularProgressIndicator())
+                          : Column(
+                              children: list
+                                  .map((e) => MaintenanceItem(
+                                        date: e.createdAt ?? '',
+                                        title: e.categoryName ?? '',
+                                        description:
+                                            e.maintenanceDescription ?? '',
+                                        statusTags: [
+                                          MaintenanceTag(
+                                            text: e.priority ?? '',
+                                            color: e.priority == "High"
+                                                ? Colors.redAccent
+                                                : e.priority == "Medium"
+                                                    ? Colors.yellowAccent
+                                                    : Colors.orange,
+                                          ),
+                                          MaintenanceTag(
+                                              text:
+                                                  e.maintenanceOrderStatuses ??
+                                                      '',
+                                              color: e.maintenanceOrderStatuses ==
+                                                      "Accepted"
+                                                  ? Colors.lightBlueAccent
+                                                  : e.maintenanceOrderStatuses ==
+                                                          "In-Progress"
+                                                      ? Colors.orangeAccent
+                                                      : e.maintenanceOrderStatuses ==
+                                                              "Completed"
+                                                          ? Colors.greenAccent
+                                                          : e.maintenanceOrderStatuses ==
+                                                                  "Cancelled"
+                                                              ? Colors
+                                                                  .redAccent
+                                                              : Colors
+                                                                  .yellowAccent),
+                                        ],
+                                        onDelete: () {
+                                          context
+                                              .read<MaintenanceCubit>()
+                                              .deleteMaintenances(
+                                                  e.sId ?? '');
+                                        },
+                                        onUpdatePriority: () {},
+                                        onUpdateStatus: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            builder: (context) =>
+                                                StatusUpdateDialog(
+                                              item: e,
                                             ),
-                                            MaintenanceTag(
-                                                text:
-                                                    e.maintenanceOrderStatuses ??
-                                                        '',
-                                                color: e.maintenanceOrderStatuses ==
-                                                        "Accepted"
-                                                    ? Colors.lightBlueAccent
-                                                    : e.maintenanceOrderStatuses ==
-                                                            "In-Progress"
-                                                        ? Colors.orangeAccent
-                                                        : e.maintenanceOrderStatuses ==
-                                                                "Completed"
-                                                            ? Colors.greenAccent
-                                                            : e.maintenanceOrderStatuses ==
-                                                                    "Cancelled"
-                                                                ? Colors
-                                                                    .redAccent
-                                                                : Colors
-                                                                    .yellowAccent),
-                                          ],
-                                          onUpdatePriority: () {},
-                                          onUpdateStatus: () {
-                                            // Example of updating the status
-
-                                            showModalBottomSheet(
-                                              context: context,
-                                              isScrollControlled: true,
-                                              builder: (context) =>
-                                                  StatusUpdateDialog(
-                                                item: e,
-                                                // maintenanceItem: e,
-                                                // onUpdate:
-                                                //     (newStatus, newColor) {
-                                                //   // updateStatus(index, newStatus, newColor);
-                                                //   print(newStatus);
-                                                //   Navigator.pop(context);
-                                                // },
-                                              ),
-                                            );
-                                          },
-                                          feedbackComment: e.feedbackComment,
-                                        ))
-                                    .toList(),
-                              );
-                      },
-                    )
-                    //
-                    // Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: maintenanceItems
-                    //       .asMap()
-                    //       .entries
-                    //       .map((entry) {
-                    //     int index = entry.key;
-                    //     Map<String, dynamic> item = entry.value;
-                    //     return Column(
-                    //       children: [
-                    //         MaintenanceItem(
-                    //           title: item['title'],
-                    //           description: item['description'],
-                    //           statusTags: [
-                    //             MaintenanceTag(
-                    //               text: item['status'],
-                    //               color: item['statusColor'],
-                    //             ),
-                    //             MaintenanceTag(
-                    //               text: item['priority'],
-                    //               color: item['priorityColor'],
-                    //             ),
-                    //           ],
-                    //           onUpdateStatus: () {
-                    //             // Example of updating the status
-                    //             showModalBottomSheet(
-                    //               context: context,
-                    //               builder: (context) => StatusUpdateDialog(
-                    //                 onUpdate: (newStatus, newColor) {
-                    //                   updateStatus(index, newStatus, newColor);
-                    //                   Navigator.pop(context);
-                    //                 },
-                    //               ),
-                    //             );
-                    //           },
-                    //           onUpdatePriority: () {
-                    //             // Example of updating the priority
-                    //             showModalBottomSheet(
-                    //               context: context,
-                    //               builder: (context) => PriorityUpdateDialog(
-                    //                 onUpdate: (newPriority, newColor) {
-                    //                   updatePriority(index, newPriority, newColor);
-                    //                   Navigator.pop(context);
-                    //                 },
-                    //               ),
-                    //             );
-                    //           },
-                    //         ),
-                    //         const SizedBox(height: defaultPadding),
-                    //       ],
-                    //     );
-                    //   }).toList(),
-                    // ),
-                    //
-
-                    ),
-              ],
-            ),
+                                          );
+                                        },
+                                        feedbackComment: e.feedbackComment,
+                                      ))
+                                  .toList(),
+                            );
+                    },
+                  )),
+            ],
           ),
         ),
       ),
@@ -181,7 +125,6 @@ class _AdminShowAllMaintananceScreenState
 
 // Dialog for updating status
 class StatusUpdateDialog extends StatelessWidget {
-  // final Function(String, Color) onUpdate;
   final MaintenanceModelData item;
 
   StatusUpdateDialog({super.key, required this.item});
@@ -212,7 +155,6 @@ class StatusUpdateDialog extends StatelessWidget {
               //[Pending, Accepted, In-Progress, Completed, Cancelled]
               statusItem(
                 context: context,
-
                 title: "Pending".tr(context),
                 controller: pendingC,
                 onSend: () => cubit.changeStatus(
@@ -233,7 +175,6 @@ class StatusUpdateDialog extends StatelessWidget {
               ),
               statusItem(
                 context: context,
-
                 title: "InProgress".tr(context),
                 controller: inProgressC,
                 onSend: () => cubit.changeStatus(
@@ -244,7 +185,6 @@ class StatusUpdateDialog extends StatelessWidget {
               ),
               statusItem(
                 context: context,
-
                 title: "Completed".tr(context),
                 controller: completedC,
                 onSend: () => cubit.changeStatus(
@@ -255,7 +195,6 @@ class StatusUpdateDialog extends StatelessWidget {
               ),
               statusItem(
                 context: context,
-
                 title: "Cancelled".tr(context),
                 controller: cancelledC,
                 onSend: () => cubit.changeStatus(
@@ -264,67 +203,6 @@ class StatusUpdateDialog extends StatelessWidget {
                   maintenanceStatus: "Cancelled",
                 ),
               ),
-              // ListTile(
-              //   leading: const Text(
-              //     "قيد الانتظار",
-              //     style: TextStyle(
-              //       fontSize: 15,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              //   title: TextFormField(
-              //     decoration: InputDecoration(
-              //       hintText: "Optional Comment",
-              //       hintStyle: const TextStyle(fontSize: 13),
-              //       suffixIcon: IconButton(
-              //         onPressed: () {},
-              //         icon: const Icon(Icons.send),
-              //       ),
-              //     ),
-              //   ),
-              //   onTap: () => onUpdate("قيد الانتظار", Colors.orange),
-              // ),
-              // ListTile(
-              //   leading: const Text(
-              //     "تم الأصلاح",
-              //     style: TextStyle(
-              //       fontSize: 15,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              //   title: TextFormField(
-              //     decoration: InputDecoration(
-              //       hintText: "Optional Comment",
-              //       hintStyle: const TextStyle(fontSize: 13),
-              //       suffixIcon: IconButton(
-              //         onPressed: () {},
-              //         icon: const Icon(Icons.send),
-              //       ),
-              //     ),
-              //   ),
-              //   onTap: () => onUpdate("تم الأصلاح", Colors.green),
-              // ),
-              // ListTile(
-              //   leading: const Text(
-              //     "تم الألغاء",
-              //     style: TextStyle(
-              //       fontSize: 15,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              //   title: TextFormField(
-              //     decoration: InputDecoration(
-              //       hintText: "Optional Comment",
-              //       hintStyle: const TextStyle(fontSize: 13),
-              //       suffixIcon: IconButton(
-              //         onPressed: () {},
-              //         icon: const Icon(Icons.send),
-              //       ),
-              //     ),
-              //   ),
-              //   // title: const Text("تم الألغاء"),
-              //   onTap: () => onUpdate("تم الألغاء", Colors.red),
-              // ),
             ],
           ),
         );
@@ -332,13 +210,13 @@ class StatusUpdateDialog extends StatelessWidget {
     );
   }
 
-  Widget statusItem({
-    required String title,
-    VoidCallback? onSend,
-    TextEditingController? controller,
-    required BuildContext context
-    // required String
-  }) {
+  Widget statusItem(
+      {required String title,
+      VoidCallback? onSend,
+      TextEditingController? controller,
+      required BuildContext context
+      // required String
+      }) {
     return ListTile(
       leading: Text(
         title,
@@ -358,7 +236,6 @@ class StatusUpdateDialog extends StatelessWidget {
           ),
         ),
       ),
-      // onTap: () => onUpdate("قيد الانتظار", Colors.orange),
     );
   }
 }
@@ -372,6 +249,7 @@ class MaintenanceItem extends StatelessWidget {
   final List<MaintenanceTag> statusTags;
   final VoidCallback onUpdateStatus;
   final VoidCallback onUpdatePriority;
+  final VoidCallback onDelete;
   final String? image;
 
   const MaintenanceItem({
@@ -383,6 +261,7 @@ class MaintenanceItem extends StatelessWidget {
     required this.statusTags,
     required this.onUpdateStatus,
     required this.onUpdatePriority,
+    required this.onDelete,
     this.feedbackComment,
   });
 
@@ -408,12 +287,20 @@ class MaintenanceItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  InkWell(
+                      onTap: onDelete,
+                      child: const Icon(Icons.delete, color: Colors.red)),
+                ],
               ),
               const SizedBox(height: 4),
               Text(
@@ -461,10 +348,6 @@ class MaintenanceItem extends StatelessWidget {
                   Text(extractTime(date)),
                 ],
               )
-              // ElevatedButton(
-              //   onPressed: onUpdatePriority,
-              //   child: const Text("تغيير الأولوية"),
-              // ),
             ],
           ),
         ),
@@ -493,15 +376,15 @@ class PriorityUpdateDialog extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          title:   Text("Low".tr(context)),
+          title: Text("Low".tr(context)),
           onTap: () => onUpdate("منخفضة", Colors.green),
         ),
         ListTile(
-          title:   Text("Medium".tr(context)),
+          title: Text("Medium".tr(context)),
           onTap: () => onUpdate("متوسطة", Colors.yellow),
         ),
         ListTile(
-          title:   Text("High".tr(context)),
+          title: Text("High".tr(context)),
           onTap: () => onUpdate("عالية", Colors.red),
         ),
       ],

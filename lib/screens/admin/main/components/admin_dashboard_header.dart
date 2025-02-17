@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mycompass_admin_website/core/locale/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:mycompass_admin_website/controllers/menu_app_controller.dart';
 import 'package:mycompass_admin_website/core/responsive.dart';
@@ -21,7 +22,7 @@ class AdminDashboardHeader extends StatelessWidget {
           ),
         if (!Responsive.isMobile(context))
           Text(
-            "لوحة التحكم",
+            "Dashboard".tr(context),
             style: Theme.of(context).textTheme.titleLarge,
           ),
         if (!Responsive.isMobile(context))
@@ -79,7 +80,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        hintText: "أبحث هنا...",
+        hintText:"${"SearchHere".tr(context)}...",
         fillColor: secondaryColor,
         filled: true,
         border: const OutlineInputBorder(

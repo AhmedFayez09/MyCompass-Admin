@@ -17,98 +17,87 @@ class UsersNotResponsedScreen extends StatelessWidget {
         NonResponsedModel? list = context.read<AdminCubit>().nonResponsedModel;
         return list == null
             ? const Center(child: CircularProgressIndicator())
-            : Directionality(
-                textDirection: TextDirection.rtl,
-                child: Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Colors.transparent,
-                  ),
-                  body: Padding(
-                    padding:   EdgeInsets.symmetric(horizontal: 20),
-                    child: CustomScrollView(
-
-                      slivers: [
-
-
-
-
-                        SliverToBoxAdapter(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("المستخدمين غير مستجابين"),
-                              const SizedBox(height: defaultPadding),
-                              const Divider(),
-                              Row(
-                                children: [
-                                  DataTable(
-                                    columnSpacing: defaultPadding,
-                                    columns: [
-                                      DataColumn(
-                                        label: Text("أسم المستخدم",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium),
-                                      ),
-                                    ],
-                                    rows: List.generate(
-                                        list.nonRespondedUsers?.length ?? 0,
-                                            (index) {
-                                          NonRespondedUsers? item =
-                                          list.nonRespondedUsers?[index];
-                                          return recentCustomerDataRow(
-                                            context: context,
-                                            item: item,
-                                          );
-                                        }),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        SliverToBoxAdapter(child: SizedBox(height: 50)),
-                        SliverToBoxAdapter(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text("الموظفين غير مستجابين"),
-                              const SizedBox(height: defaultPadding),
-                              const Divider(),
-                              Row(
-                                children: [
-                                  DataTable(
-                                    columnSpacing: defaultPadding,
-                                    columns: [
-                                      DataColumn(
-                                        label: Text("أسم الموظف",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium),
-                                      ),
-                                    ],
-                                    rows: List.generate(
-                                      list.nonRespondedEmployees?.length ?? 0,
-                                          (index) {
-                                        NonRespondedUsers? item =
-                                        list.nonRespondedEmployees?[index];
-                                        return recentCustomerDataRow(
-                                          context: context,
-                                          item: item,
-                                        );
-                                      },
+            : Scaffold(
+                appBar: AppBar(backgroundColor: Colors.transparent),
+                body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text("المستخدمين غير مستجابين"),
+                            const SizedBox(height: defaultPadding),
+                            const Divider(),
+                            Row(
+                              children: [
+                                DataTable(
+                                  columnSpacing: defaultPadding,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("أسم المستخدم",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                                  ],
+                                  rows: List.generate(
+                                      list.nonRespondedUsers?.length ?? 0,
+                                      (index) {
+                                    NonRespondedUsers? item =
+                                        list.nonRespondedUsers?[index];
+                                    return recentCustomerDataRow(
+                                      context: context,
+                                      item: item,
+                                    );
+                                  }),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                ),
-              );
+                      ),
+                      SliverToBoxAdapter(child: SizedBox(height: 50)),
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("الموظفين غير مستجابين"),
+                            const SizedBox(height: defaultPadding),
+                            const Divider(),
+                            Row(
+                              children: [
+                                DataTable(
+                                  columnSpacing: defaultPadding,
+                                  columns: [
+                                    DataColumn(
+                                      label: Text("أسم الموظف",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ],
+                                  rows: List.generate(
+                                    list.nonRespondedEmployees?.length ?? 0,
+                                    (index) {
+                                      NonRespondedUsers? item =
+                                          list.nonRespondedEmployees?[index];
+                                      return recentCustomerDataRow(
+                                        context: context,
+                                        item: item,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ));
       },
     );
   }

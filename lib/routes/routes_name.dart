@@ -32,4 +32,6 @@ class RoutesName {
   static const String adminEditImageToGalleryScreen = '/admin/edit-image-to-gallery';
   static const String editEmployeeScreen = '/admin/edit-employee';
   static const String usersStatusScreen = '/admin/users-status';
+  static const String privacyPolicy = '/employee/privacy-policy';
+
 }
